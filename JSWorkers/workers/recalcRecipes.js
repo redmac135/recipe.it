@@ -1,9 +1,9 @@
 import { orkesTaskWorker } from "@io-orkes/conductor-javascript";
 import db from "../firestore.js";
 
-// This worker reads the user's KitchenInventory from Firestore,
-// recalculates recipes (here simulated with a dummy response),
-// and writes the results to the Recipes collection.
+import { orkesTaskWorker } from "@io-orkes/conductor-javascript";
+import db from "../firestore.js";
+
 export default orkesTaskWorker({
     taskDefName: "recalcRecipes",
     async execute(task) {
@@ -12,7 +12,8 @@ export default orkesTaskWorker({
         if (!invDoc.exists) throw new Error("Kitchen inventory not found for user");
         const inventory = invDoc.data();
 
-        // Prepare an AI prompt using inventory (omitted for brevity) and simulate a dummy response:
+        // In a real implementation, prepare an AI prompt with the inventory to generate recipes.
+        // For demonstration, we use a dummy response:
         const dummyRecipes = {
             complete: [
                 {
@@ -31,7 +32,6 @@ export default orkesTaskWorker({
             ],
         };
 
-        // Update Firestore Recipes collection for the user:
         await db.collection("Recipes").doc(userId).set(dummyRecipes);
         return { recipes: dummyRecipes };
     },

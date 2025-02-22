@@ -1,4 +1,3 @@
-// firestore.js
 import admin from 'firebase-admin';
 import serviceAccount from './privkey.json';  // Your service account JSON
 
