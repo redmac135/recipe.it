@@ -1,37 +1,19 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Colors from "../../constants/Colors";
-import { Checkbox } from "react-native-paper";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
-export interface ButtonProps {
-  name: string;
-  expiry_date: string;
-  ai: boolean;
-  category: string;
-  quantity: number;
-  original_index?: number;
-}
+import { ButtonProps } from "@/state/inventory/inventorySlice";
+import { useDispatch } from "react-redux";
+import { removeQ, addQ } from "@/state/inventory/inventorySlice";
 
 const ItemButton = ({
   name,
   expiry_date,
-  setItems,
-  items,
-  ai,
+  unit,
   category,
   quantity,
-  original_index,
-}: {
-  name: string;
-  expiry_date: string;
-  ai: boolean;
-  items: ButtonProps[];
-  category: string;
-  quantity: number;
-  original_index: number;
-  setItems: (newItems: ButtonProps[]) => void;
-}) => {
+}: ButtonProps) => {
+  const dispatch = useDispatch();
+
   return (
     <View style={{ height: 70 }}>
       <View
@@ -39,8 +21,8 @@ const ItemButton = ({
           height: 60,
           borderRadius: 40,
           borderWidth: 1,
-          borderColor: ai ? Colors.activity : Colors.black,
-          backgroundColor: ai ? Colors.white : Colors.button,
+          borderColor: Colors.black,
+          backgroundColor: Colors.button,
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "row",
@@ -69,7 +51,7 @@ const ItemButton = ({
           <Text
             style={{
               fontSize: 20,
-              color: ai ? Colors.activity : Colors.black,
+              color: Colors.black,
               fontFamily: "inter",
               fontWeight: "500",
               letterSpacing: 0.5,
@@ -89,9 +71,7 @@ const ItemButton = ({
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                let newItems = Array.from(items);
-                newItems[original_index].quantity -= 1;
-                setItems(newItems);
+                dispatch(removeQ(name));
               }}
             >
               <Text style={styles.buttonText}>-</Text>
@@ -100,9 +80,7 @@ const ItemButton = ({
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                let newItems = Array.from(items);
-                newItems[original_index].quantity += 1;
-                setItems(newItems);
+                dispatch(addQ(name));
               }}
             >
               <Text style={styles.buttonText}>+</Text>

@@ -4,27 +4,16 @@ import Header from "@/components/Header";
 import { useEffect, useState } from "react";
 import Section from "@/components/Inventory/Section";
 import data from "../../constants/item_data";
-import { ButtonProps } from "@/components/Inventory/ItemButton";
+import { RootState } from "@/state/store";
+import { useDispatch, useSelector } from "react-redux";
+import { ButtonProps, set } from "@/state/inventory/inventorySlice";
 
 export default function Inventory() {
-  const [items, setItems] = useState<
-    {
-      name: string;
-      expiry_date: string;
-      ai: boolean;
-      category: string;
-      quantity: number;
-      original_index?: number;
-    }[]
-  >(data.testerItems);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    items.forEach((item, index) => {
-      let newItems = Array.from(items);
-      newItems[index].original_index = index;
-      setItems(newItems);
-    });
-  }, []);
+    dispatch(set(data.testerItems));
+  });
 
   const categories = ["Pantry", "Fridge", "Freezer"];
 
@@ -34,15 +23,7 @@ export default function Inventory() {
       <View style={{ flex: 1, alignItems: "center" }}>
         <ScrollView style={{ width: "85%" }}>
           {categories.map((category, index) => {
-            return (
-              <Section
-                key={index}
-                name={category}
-                allItems={items}
-                items={items.filter((value) => value.category === category)}
-                setItems={() => setItems}
-              />
-            );
+            return <Section key={index} name={category} />;
           })}
         </ScrollView>
       </View>
