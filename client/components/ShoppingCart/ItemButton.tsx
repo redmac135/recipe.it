@@ -55,11 +55,19 @@ const ItemButton = ({
               onPress={onPress}
             />
           ) : (
-            <Checkbox
-              status={selected ? "checked" : "unchecked"}
-              onPress={onPress}
-              color={Colors.black}
-            />
+            <View
+              style={{
+                borderWidth: 0.7,
+                borderColor: Colors.black,
+                borderRadius: 50,
+              }}
+            >
+              <Checkbox
+                status={selected ? "checked" : "unchecked"}
+                onPress={onPress}
+                color={Colors.black}
+              />
+            </View>
           )}
         </View>
         <View
@@ -77,6 +85,7 @@ const ItemButton = ({
               letterSpacing: 0.5,
             }}
             adjustsFontSizeToFit={true}
+            numberOfLines={2}
           >
             {name}
           </Text>

@@ -69,7 +69,7 @@ export default function HomeScreen() {
               textColor="black"
               style={{
                 backgroundColor: Colors.white,
-                width: "110%",
+                width: "90%",
               }}
             ></TextInput>
           </View>
@@ -130,40 +130,25 @@ export default function HomeScreen() {
           />
         ))}
       </ScrollView>
-      <View style={{ alignItems: "center" }}>
+      <View style={{ alignItems: "center", marginBottom: "20%" }}>
         <CustomButton
           text="Add Item"
           backgroundColor={Colors.activity}
           onPress={() => {
             setDialog(true);
           }}
-          bottom={100}
+          bottom={140}
         />
         <CustomButton
           text="Remove Selected Items"
           backgroundColor={Colors.activity}
           onPress={() => {
-            Alert.alert(
-              "Are you sure you want to remove the selected items?",
-              undefined,
-              [
-                {
-                  text: "Cancel",
-                  style: "cancel",
-                },
-                {
-                  text: "Remove",
-                  onPress: () => {
-                    setCartItems(
-                      cartItems.filter((item) => !selectedItems.includes(item))
-                    );
-                    setSelectedItems([]);
-                  },
-                },
-              ]
+            setCartItems(
+              cartItems.filter((item) => !selectedItems.includes(item))
             );
+            setSelectedItems([]);
           }}
-          bottom={20}
+          bottom={60}
         />
       </View>
     </SafeAreaView>
@@ -184,22 +169,6 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
-  },
   dialog: {
     fontFamily: "inter",
     fontSize: 24,
