@@ -7,11 +7,23 @@ const ai = genkit({
   model: gemini20Flash,
 });
 
-const generateWithSchema = async (prompt: string, schema: ZodSchema) => {
-  return ai.generate({
+const generateWithSchema = async (
+  prompt: string,
+  schema: ZodSchema,
+  system?: string,
+) => {
+  const request: {
+    prompt: string;
+    output: { schema: ZodSchema };
+    system?: string;
+  } = {
     prompt: prompt,
     output: { schema: schema },
-  });
+  };
+
+  if (system) request.system = system;
+
+  return ai.generate(request);
 };
 
 export { generateWithSchema };
