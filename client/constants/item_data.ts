@@ -27,4 +27,34 @@ export default { items : [
     "$12.99",
     "$13.99",
     "$14.99",
+  ],
+  testerItems : [
+    {
+      name: "Checken Pot Pie Autn Nona Made In Montego Bay",
+      expiry_date: "2022-12-31",
+      ai: false,
+      category: "Fridge",
+      quantity: 1,
+    },
+    {
+      name: "Eggs",
+      expiry_date: "2022-12-31",
+      ai: false,
+      category: "Fridge",
+      quantity: 2
+    },
+    {
+      name: "Bread",
+      expiry_date: "2022-12-31",
+      ai: false,
+      category: "Pantry",
+      quantity: 3
+    },
+    {
+      name: "Chicken",
+      expiry_date: "2022-12-31",
+      ai: false,
+      category: "Freezer",
+      quantity: 3
+    },
   ]};
