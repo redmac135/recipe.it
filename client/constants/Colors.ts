@@ -9,6 +9,10 @@ const tintColorDark = '#fff';
 const Colors = {
   background: '#fff',
   activity: "#582C83",
+  button: "#c1cfd4",
+  white: "#fff",
+  gray: "#808588",
+  black: "#000",
   light: {
     text: '#11181C',
     background: '#fff',

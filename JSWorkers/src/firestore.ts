@@ -1,5 +1,5 @@
-import admin from 'firebase-admin';
-import serviceAccount from './privkey.json'; 
+import admin from "firebase-admin";
+const serviceAccount = require("./privkey.json");
 
 if (!admin.apps.length) {
   admin.initializeApp({
