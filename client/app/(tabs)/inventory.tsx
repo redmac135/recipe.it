@@ -1,10 +1,11 @@
 import { Text, StyleSheet, View, SafeAreaView } from "react-native";
 import Colors from "../../constants/Colors";
+import Header from "@/components/Header";
 
 export default function TabTwoScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
-      <Text>Inventory</Text>
+      <Header name={"Inventory"} back={false} />
     </SafeAreaView>
   );
 }
