@@ -1,6 +1,6 @@
-import { gemini20Flash, googleAI } from "@genkit-ai/googleai";
-import { genkit } from "genkit";
 import { z } from "zod";
+import { generateWithSchema } from "./geminiAPI";
+import { type TaskResult, type Task } from "@io-orkes/conductor-javascript";
 
 const BoughtSchema = z.object({
   purchase_date: z.string(),
@@ -12,17 +12,13 @@ const BoughtSchema = z.object({
   ),
 });
 
-const ai = genkit({
-  plugins: [googleAI()],
-  model: gemini20Flash,
-});
-
-async function parseReceiptText(task) {
+async function parseReceiptText(
+  task: Task,
+): Promise<Omit<TaskResult, "workflowInstanceId" | "taskId">> {
   const receiptText = task.inputData?.receipt_text;
-  const GOOGLE_GENAI_API_KEY = task.inputData?.google_genai_api_key;
-  prompt = ```
+  const prompt = `
 You are a helpful receipt data extraction assistant.
-Today's date is ${new Intl.DateTimeFormat("en-CA").format(new Date())}.
+Today's date is ${"hi"}.
 Given the following receipt text, please extract the purchase date and list of purchased items.
 For each item, estimate an expiry date based on common shelf life assumptions for that product category, and calculate how many days remain until expiry (using today's date).
 Return your answer in JSON format with these keys:
@@ -33,13 +29,20 @@ Return your answer in JSON format with these keys:
 
 Receipt text:
 ${receiptText}
-```;
-  const { output } = await ai.generate({
-    prompt: prompt,
-    output: { schema: BoughtSchema },
-  });
+`;
 
-  if (!receiptText) {
+  if (!prompt) {
+    return {
+      status: "FAILED",
+      outputData: {
+        error: "prompt did not generate successfully",
+      },
+    };
+  }
+
+  const { output } = await generateWithSchema(prompt, BoughtSchema);
+
+  if (!output) {
     return {
       status: "FAILED",
       outputData: {
@@ -51,7 +54,7 @@ ${receiptText}
   return {
     status: "COMPLETED",
     outputData: {
-      output,
+      ...output,
     },
   };
 }

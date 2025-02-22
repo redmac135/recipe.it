@@ -3,11 +3,20 @@ import parseReceiptTextWorker from "./workers/parseReceiptText.js";
 import parseReceiptTextWorker from "./workers/parseReceiptText.js";
 import recalcRecipesWorker from "./workers/recalcRecipes.js";
 import updateInventoryWorker from "./workers/updateInventory.js";
+import {
+  orkesConductorClient,
+  TaskManager,
+} from "@io-orkes/conductor-javascript";
+
+import dotenv from "dotenv";
+dotenv.config();
+
+import parseReceiptTextWorker from "./workers/parseReceiptText";
 
 const config = {
-  serverUrl: "https://developer.orkescloud.com/api",
-  keyId: "_CHANGE_ME_",
-  keySecret: "_CHANGE_ME_",
+  serverUrl: process.env.CONDUCTOR_SERVER_URL,
+  keyId: process.env.CONDUCTOR_AUTH_KEY,
+  keySecret: process.env.CONDUCTOR_AUTH_SECRET,
 };
 
 async function main() {
