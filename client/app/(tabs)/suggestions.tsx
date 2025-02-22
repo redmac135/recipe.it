@@ -1,11 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
+import Colors from "../../constants/Colors";
 
 const suggestions = () => {
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
       <Text>suggestions</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

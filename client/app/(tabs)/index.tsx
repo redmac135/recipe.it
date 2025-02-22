@@ -1,7 +1,13 @@
-import { Image, StyleSheet, Platform, View } from "react-native";
+import Header from "@/components/Header";
+import Colors from "@/constants/Colors";
+import { Text, StyleSheet, Platform, View, SafeAreaView } from "react-native";
 
 export default function HomeScreen() {
-  return <View>Cart</View>;
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
+      <Header name={"Shopping Cart"} back={false} />
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({

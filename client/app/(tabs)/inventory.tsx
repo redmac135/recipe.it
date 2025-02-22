@@ -1,7 +1,12 @@
-import { StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, SafeAreaView } from "react-native";
+import Colors from "../../constants/Colors";
 
 export default function TabTwoScreen() {
-  return <View>Inventory</View>;
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
+      <Text>Inventory</Text>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
