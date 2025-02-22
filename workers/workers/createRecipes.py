@@ -47,7 +47,7 @@ def workerFn(image_base64: str) -> dict[str, str | bool]:
         receipt_text = f.read()
 
     print("Processing receipt...")
-    receipt_data = process_receipt(receipt_text)
+    receipt_data = 3(receipt_text)
     if not receipt_data:
         print("No data extracted from receipt.")
         return
