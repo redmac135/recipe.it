@@ -12,6 +12,7 @@ cred = credentials.Certificate(service_account_path)
 initialize_app(cred)
 db = firestore.client()
 
+
 @app.get("/data")
 def get_grocery_items():
     grocery_items = []
@@ -22,6 +23,7 @@ def get_grocery_items():
         grocery_items.append(doc.to_dict())
 
     return {"GroceryItems": grocery_items}
+
 
 @app.get("/data")
 def get_kitchen_items():
@@ -34,6 +36,7 @@ def get_kitchen_items():
 
     return {"KitchenItems": kitchen_items}
 
+
 @app.get("/data")
 def get_recipes():
     recipes = []
@@ -43,3 +46,4 @@ def get_recipes():
         recipes.append(doc.to_dict())
 
     return {"Recipes": recipes}
+
