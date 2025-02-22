@@ -14,25 +14,33 @@ export type GroceryItem = {
   ai_reason?: GroceryAIReasonEnum;
   estimated_cost?: number;
 
-  // if it is low quantity
-  recipe_to_complete?: {
-    name: string;
-    ingredients_have: { name: string; quantity: number; unit: string }[];
-    ingredients_purchasable: {
-      name: string;
-      minQuantity: number;
-      unit: string;
-    }[];
-    estimated_cost: number;
-  };
+  // if it to complete recipe
+  recipe_name?: string;
 };
 
 export type Recipe = {
   name: string;
-  ingredients_per_serving: { name: string; quantity: number; unit: string }[];
+  is_complete: boolean;
+  ingredients_have_per_serving: {
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  existing_groceries_per_serving?: {
+    // for incomplete recipe
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  new_groceries_per_serving?: {
+    // for incomplete recipe
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
   max_servings: number;
-  estimated_cost: number;
-  steps: string[];
+  estimated_cost?: number; // for incomplete recipe
+  steps?: string[]; // for complete recipe
 };
 
 export type KitchenItem = {

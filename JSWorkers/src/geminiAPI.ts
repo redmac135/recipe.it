@@ -8,6 +8,7 @@ const ai = genkit({
 });
 
 const generateWithSchema = async (prompt: string, schema: ZodSchema): Promise<any> => {
+
   return ai.generate({
     prompt: prompt,
     output: { schema: schema },
