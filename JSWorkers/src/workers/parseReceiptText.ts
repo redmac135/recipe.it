@@ -2,15 +2,14 @@ import { z } from "zod";
 import { generateWithSchema } from "../geminiAPI";
 import { type TaskResult, type Task } from "@io-orkes/conductor-javascript";
 
-const BoughtSchema = z.object({
-  purchase_date: z.string(),
-  items: z.array(
-    z.object({
-      name: z.string(),
-      expiry_date: z.string(),
-    }),
-  ),
-});
+const boughtSchema = z.array(
+  z.object({
+    name: z.string(),
+    quantity: z.number(),
+    unit: z.string(),
+    expiry_date: z.string(),
+  }),
+);
 
 async function parseReceiptText(
   task: Task,
@@ -25,7 +24,11 @@ Return your answer in JSON format with these keys:
   - "purchase_date": the date of purchase (YYYY-MM-DD),
   - "items": a list of objects, each containing:
       "name": the item name,
+      "quantity": the amount (in units) purchased,
+      "units": the unit of measurements (per breast, per kg, per mL, etc),
       "expiry_date": the estimated expiry date (YYYY-MM-DD)
+
+if the units and quantity are unknown, please put forward your best guess.
 
 Receipt text:
 ${receiptText}
@@ -40,7 +43,7 @@ ${receiptText}
     };
   }
 
-  const { output } = await generateWithSchema(prompt, BoughtSchema);
+  const { output } = await generateWithSchema(prompt, boughtSchema);
 
   if (!output) {
     return {
@@ -51,11 +54,10 @@ ${receiptText}
     };
   }
 
-
   return {
     status: "COMPLETED",
     outputData: {
-      ...output,
+      bought: output,
     },
   };
 }

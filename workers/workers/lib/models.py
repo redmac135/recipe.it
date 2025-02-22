@@ -1,8 +1,11 @@
+from dataclasses import dataclass
 from pydantic import BaseModel
 
-class GroceryItem(BaseModel):
+
+@dataclass
+class GroceryItem:
     name: str
-    quantity: int
+    quantity: float
     unit: str
     is_approved: bool
 
@@ -12,7 +15,9 @@ class GroceryItem(BaseModel):
 
     recipe_name: str
 
-class Recipe(BaseModel):
+
+@dataclass
+class Recipe:
     name: str
     is_complete: bool
     ingredients_have_per_serving: list[dict[str, str]]
@@ -23,9 +28,9 @@ class Recipe(BaseModel):
     steps: list[str]
 
 
-class KitchenItem(BaseModel):
+@dataclass
+class KitchenItem:
     name: str
-    quantity: int
+    quantity: float
     unit: str
     expiry_date: str
-

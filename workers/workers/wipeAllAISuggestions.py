@@ -1,5 +1,5 @@
 from conductor.client.worker.worker_task import worker_task
-from .connectToDb import db
+from .lib.connectToDb import db
 
 
 @worker_task(task_definition_name="wipe_all_ai_suggestions")
@@ -16,4 +16,4 @@ def wipe_all_ai_suggestions_workerFn():
     for doc in recipe_docs:
         doc.reference.delete()
 
-    return {"message": "All AI suggestions have been wiped"}
+    return

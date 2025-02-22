@@ -1,5 +1,5 @@
 from conductor.client.worker.worker_task import worker_task
-from .connectToDb import db
+from .lib.connectToDb import db
 
 
 @worker_task(task_definition_name="get_recipes")
