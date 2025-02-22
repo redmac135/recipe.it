@@ -1,11 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import React from "react";
+import Colors from "../../constants/Colors";
 
 const food = () => {
   return (
-    <View>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
       <Text>food</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
