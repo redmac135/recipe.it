@@ -84,8 +84,3 @@ def workerFn(image_base64: str) -> dict[str, str | bool]:
     }
     print("\nInitial Inventory:")
     print(json.dumps(inventory, indent=2))
-    
-    # Update the inventory based on the recipe ingredients
-    updated_inventory = update_inventory(example_recipe_ingredients, inventory)
-    print("\nUpdated Inventory after using recipe:")
-    print(json.dumps(updated_inventory, indent=2))
