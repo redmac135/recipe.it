@@ -1,5 +1,13 @@
-import { View, Text, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Touchable,
+  TouchableOpacity,
+} from "react-native";
 import React from "react";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
 
 interface HeaderProps {
   name: string;
@@ -7,10 +15,12 @@ interface HeaderProps {
 }
 
 const Header = ({ name, back }: HeaderProps) => {
+  const router = useRouter();
+
   return (
     <View
       style={{
-        height: "15%",
+        height: "12%",
         flexDirection: "row",
       }}
     >
@@ -20,7 +30,17 @@ const Header = ({ name, back }: HeaderProps) => {
           alignItems: "center",
           justifyContent: "center",
         }}
-      ></View>
+      >
+        {back ? (
+          <TouchableOpacity onPress={() => router.back()}>
+            <MaterialIcons
+              name="arrow-back"
+              size={30}
+              style={{ marginLeft: 30 }}
+            />
+          </TouchableOpacity>
+        ) : null}
+      </View>
       <View
         style={{
           flex: 4,
@@ -28,14 +48,7 @@ const Header = ({ name, back }: HeaderProps) => {
           justifyContent: "center",
         }}
       >
-        <Text
-          style={{
-            fontSize: 30,
-            fontFamily: "inter",
-            fontWeight: "bold",
-          }}
-          adjustsFontSizeToFit={true}
-        >
+        <Text style={styles.title} adjustsFontSizeToFit={true}>
           {name}
         </Text>
       </View>
