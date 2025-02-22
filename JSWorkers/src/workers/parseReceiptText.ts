@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { generateWithSchema } from "./geminiAPI";
+import { generateWithSchema } from "../geminiAPI";
 import { type TaskResult, type Task } from "@io-orkes/conductor-javascript";
 
 const BoughtSchema = z.object({
@@ -50,6 +50,7 @@ ${receiptText}
       },
     };
   }
+
 
   return {
     status: "COMPLETED",

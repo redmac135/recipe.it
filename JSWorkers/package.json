@@ -17,6 +17,7 @@
     "dotenv": "^16.4.7",
     "firebase-admin": "^13.1.0",
     "genkit": "^1.0.5",
+    "jsworkers": "file:",
     "zod": "^3.24.2"
   },
   "devDependencies": {

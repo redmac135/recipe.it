@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { generateWithSchema } from "./geminiAPI";
+
 export const CONVERSION_FACTORS = {
   lb_to_g: 453.592,
   kg_to_g: 1000,
@@ -6,22 +9,24 @@ export const CONVERSION_FACTORS = {
   ml_to_ml: 1,
 };
 
-export function convertUnits(
+const unitConversionSchema = z.object({
+  result: z.number()
+})
+
+export async function convertUnits(
   amount: number,
   fromUnit: string,
   toUnit: string,
-): number | null {
-  fromUnit = fromUnit.toLowerCase().trim();
-  toUnit = toUnit.toLowerCase().trim();
-  if (fromUnit === "lb" && toUnit === "g")
-    return amount * CONVERSION_FACTORS["lb_to_g"];
-  if (fromUnit === "kg" && toUnit === "g")
-    return amount * CONVERSION_FACTORS["kg_to_g"];
-  if (fromUnit === "g" && toUnit === "g") return amount;
-  if ((fromUnit === "l" || fromUnit === "liter") && toUnit === "ml")
-    return amount * CONVERSION_FACTORS["l_to_ml"];
-  if (fromUnit === "ml" && toUnit === "ml") return amount;
-  console.warn(`No conversion factor defined for ${fromUnit} to ${toUnit}`);
-  return null;
+): Promise<number> {
+  const prompt = `
+You are a unit conversion expert.
+Convert the following value from its original unit to the target unit and output only the numerical result.
+Value: ${amount} ${fromUnit}
+Target unit: ${toUnit}
+Return only the converted numerical value (do not include any extra text or explanation).
+`;
+
+  const { result }: { result: number } = await generateWithSchema(prompt, unitConversionSchema);
+  return result;
 }
 
