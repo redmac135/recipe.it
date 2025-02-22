@@ -5,7 +5,7 @@ from firebase_admin import credentials, firestore, initialize_app
 app = FastAPI()
 
 # Path to your Firebase service account key JSON file
-service_account_path = "../JSWorkers/src/privkey.json"
+service_account_path = "../serviceAccountKey.json"
 
 # Initialize Firebase Admin SDK
 cred = credentials.Certificate(service_account_path)
@@ -46,4 +46,3 @@ def get_recipes():
         recipes.append(doc.to_dict())
 
     return {"Recipes": recipes}
-
