@@ -89,9 +89,9 @@ ${groceryList
   };
 }
 
-const generateCompleteRecipesWorker = {
-  taskDefName: "generate_complete_recipes",
+const generateCompleteRecipeWorker = {
+  taskDefName: "generate_partial_recipes",
   execute: generateCompleteRecipe,
 };
 
-export default generateCompleteRecipesWorker;
+export default generateCompleteRecipeWorker;
