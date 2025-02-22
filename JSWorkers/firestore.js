@@ -1,10 +1,10 @@
 import admin from 'firebase-admin';
-import serviceAccount from './privkey.json';  // Your service account JSON
+import serviceAccount from './privkey.json'; 
 
 if (!admin.apps.length) {
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-    });
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+  });
 }
 
 const db = admin.firestore();

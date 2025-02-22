@@ -1,19 +1,48 @@
-export const CONVERSION_FACTORS = {
-  'lb_to_g': 453.592,
-  'kg_to_g': 1000,
-  'g_to_g': 1,
-  'l_to_ml': 1000,
-  'ml_to_ml': 1,
-};
+import fetch from "node-fetch";
 
-export function convertUnits(amount, fromUnit, toUnit) {
-  fromUnit = fromUnit.toLowerCase().trim();
-  toUnit = toUnit.toLowerCase().trim();
-  if (fromUnit === 'lb' && toUnit === 'g') return amount * CONVERSION_FACTORS['lb_to_g'];
-  if (fromUnit === 'kg' && toUnit === 'g') return amount * CONVERSION_FACTORS['kg_to_g'];
-  if (fromUnit === 'g' && toUnit === 'g') return amount;
-  if ((fromUnit === 'l' || fromUnit === 'liter') && toUnit === 'ml') return amount * CONVERSION_FACTORS['l_to_ml'];
-  if (fromUnit === 'ml' && toUnit === 'ml') return amount;
-  console.warn(`No conversion factor defined for ${fromUnit} to ${toUnit}`);
-  return null;
+async function convertUnitsUsingGemini(amount, fromUnit, toUnit) {
+  // Build a prompt that instructs Gemini to perform the conversion.
+  const prompt = `
+You are a unit conversion expert.
+Convert the following value from its original unit to the target unit and output only the numerical result.
+Value: ${amount} ${fromUnit}
+Target unit: ${toUnit}
+Return only the converted numerical value (do not include any extra text or explanation).
+`;
+
+  const endpoint = "https://genai.googleapis.com/v1/models/gemini:predict"; // Model
+  const apiKey = process.env.GOOGLE_GENAI_API_KEY;
+  if (!apiKey) {
+    throw new Error("GOOGLE_GENAI_API_KEY is not set");
+  }
+
+  const payload = { prompt };
+
+  const response = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Gemini API error: ${errorText}`);
+  }
+
+  const data = await response.json();
+  // Assume the Gemini API returns the converted number in a field called "output"
+  const resultText = data.output;
+  console.log("Raw Gemini API response for conversion:", resultText);
+
+  // Parse the converted value
+  const convertedValue = parseFloat(resultText);
+  if (isNaN(convertedValue)) {
+    throw new Error(`Failed to parse converted value from Gemini API response: ${resultText}`);
+  }
+  return convertedValue;
 }
+
+export default convertUnitsUsingGemini;

@@ -1,8 +1,7 @@
+// workers/recalcRecipes.js
 import { orkesTaskWorker } from "@io-orkes/conductor-javascript";
 import db from "../firestore.js";
-
-import { orkesTaskWorker } from "@io-orkes/conductor-javascript";
-import db from "../firestore.js";
+import fetch from "node-fetch";
 
 export default orkesTaskWorker({
     taskDefName: "recalcRecipes",
@@ -11,28 +10,37 @@ export default orkesTaskWorker({
         const invDoc = await db.collection("KitchenInventory").doc(userId).get();
         if (!invDoc.exists) throw new Error("Kitchen inventory not found for user");
         const inventory = invDoc.data();
+        const items = inventory.items || [];
+        const ingredientNames = items.map(item => item.name);
+        const ingredientsStr = ingredientNames.join(',');
 
-        // In a real implementation, prepare an AI prompt with the inventory to generate recipes.
-        // For demonstration, we use a dummy response:
-        const dummyRecipes = {
-            complete: [
-                {
-                    name: "Beef Bulgogi",
-                    ingredients_have: [{ name: "BEEF", quantity: 200, unit: "g" }],
-                },
-            ],
-            incomplete: [
-                {
-                    name: "Hamburger",
-                    ingredients_have: [{ name: "GROUND BEEF", quantity: 150, unit: "g" }],
-                    ingredients_purchasable: [{ name: "BUNS", minQuantity: 1, unit: "loaf" }],
-                    estimated_cost: 11.92,
-                    is_approved: false,
-                },
-            ],
+        const spoonApiKey = process.env.SPOONACULAR_API_KEY;
+        if (!spoonApiKey) throw new Error("SPOONACULAR_API_KEY is not set");
+
+        const url = "https://api.spoonacular.com/recipes/findByIngredients";
+        const params = new URLSearchParams({
+            ingredients: ingredientsStr,
+            number: '5',
+            ranking: '1',
+            ignorePantry: 'true',
+            apiKey: spoonApiKey
+        });
+
+        const response = await fetch(`${url}?${params.toString()}`);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error("Error fetching recipes:", errorText);
+            throw new Error("Spoonacular API error");
+        }
+        const recipesData = await response.json();
+        const completeRecipes = recipesData.filter(r => r.missedIngredientCount === 0);
+        const incompleteRecipes = recipesData.filter(r => r.missedIngredientCount > 0);
+        const recipes = {
+            complete: completeRecipes,
+            incomplete: incompleteRecipes
         };
 
-        await db.collection("Recipes").doc(userId).set(dummyRecipes);
-        return { recipes: dummyRecipes };
+        await db.collection("Recipes").doc(userId).set(recipes);
+        return { recipes };
     },
 });
