@@ -23,7 +23,7 @@ export default function Inventory() {
       <View style={{ flex: 1, alignItems: "center" }}>
         <ScrollView style={{ width: "85%" }}>
           {categories.map((category, index) => {
-            return <Section key={index} name={category} />;
+            return <Section key={index} name={category} alphabetical={false} />;
           })}
         </ScrollView>
       </View>

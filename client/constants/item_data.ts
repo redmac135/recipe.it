@@ -30,6 +30,13 @@ export default { items : [
   ],
   testerItems : [
     {
+      name: "Farouk",
+      expiry_date: "2022-12-30",
+      unit: "g",
+      category: "Fridge",
+      quantity: 1,
+    },
+    {
       name: "Checken Pot Pie Autn Nona Made In Montego Bay",
       expiry_date: "2022-12-31",
       unit: "g",

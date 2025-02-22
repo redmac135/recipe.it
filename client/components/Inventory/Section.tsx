@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ItemButton from "./ItemButton";
 import Colors from "../../constants/Colors";
 import { ButtonProps } from "@/state/inventory/inventorySlice";
@@ -8,17 +8,30 @@ import { useSelector } from "react-redux";
 
 interface SectionProps {
   name: string;
+  alphabetical: boolean;
 }
 
-const Section = ({ name }: SectionProps) => {
+const Section = ({ name, alphabetical }: SectionProps) => {
   const inventoryList = useSelector(
     (state: RootState) => state.inventoryList
   ).inventoryList;
 
+  const [newList, setNewList] = useState<ButtonProps[]>([]);
+
+  useEffect(() => {
+    let tempList = Array.from(inventoryList);
+
+    alphabetical
+      ? setNewList(tempList.sort((a, b) => a.name.localeCompare(b.name)))
+      : setNewList(
+          tempList.sort((a, b) => a.expiry_date.localeCompare(b.expiry_date))
+        );
+  }, [inventoryList]);
+
   return (
     <View style={{ marginBottom: 20 }}>
       <Text style={styles.categoryTitle}>{name}</Text>
-      {inventoryList.map((item, index) =>
+      {newList.map((item, index) =>
         item.category === name ? (
           <ItemButton
             key={index}
