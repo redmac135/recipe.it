@@ -1,0 +1,20 @@
+{
+  "name": "jsworkers",
+  "version": "1.0.0",
+  "description": "javascript workers for conductor",
+  "main": "workers.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node workers.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@genkit-ai/googleai": "^1.0.5",
+    "@io-orkes/conductor-javascript": "^2.1.4",
+    "dotenv": "^16.4.7",
+    "genkit": "^1.0.5",
+    "zod": "^3.24.2"
+  }
+}
