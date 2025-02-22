@@ -1,7 +1,7 @@
 from firebase_admin import credentials, firestore, initialize_app
 
 # Initialize Firebase Admin SDK
-service_account_path = "../JSWorkers/src/privkey.json"
+service_account_path = "../JSWorkers/src/privkey.json" ##@redmac69 change this if you moved the file loc.
 cred = credentials.Certificate(service_account_path)
 initialize_app(cred)
 db = firestore.client()
@@ -138,27 +138,3 @@ def add_recipe():
         print(f"Recipe added successfully with id: {doc_ref[1].id}")
     except Exception as e:
         print("Error adding recipe:", e)
-
-def main():
-    while True:
-        print("\nSelect the type of entry to add:")
-        print("1. Grocery Item")
-        print("2. Kitchen Item")
-        print("3. Recipe")
-        print("4. Exit")
-        choice = input("Enter your choice (1-4): ")
-
-        if choice == "1":
-            add_grocery_item()
-        elif choice == "2":
-            add_kitchen_item()
-        elif choice == "3":
-            add_recipe()
-        elif choice == "4":
-            print("Exiting.")
-            break
-        else:
-            print("Invalid choice. Please try again.")
-
-if __name__ == "__main__":
-    main()
