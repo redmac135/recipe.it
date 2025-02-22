@@ -12,6 +12,7 @@ export type GroceryItem = {
 
   // if it is ai generated
   ai_reason?: GroceryAIReasonEnum;
+  ai_reason_details?: string;
   estimated_cost?: number;
 
   // if it to complete recipe
