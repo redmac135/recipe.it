@@ -26,7 +26,7 @@ const Section = ({ name, alphabetical }: SectionProps) => {
       : setNewList(
           tempList.sort((a, b) => a.expiry_date.localeCompare(b.expiry_date))
         );
-  }, [inventoryList]);
+  }, [inventoryList, alphabetical]);
 
   return (
     <View style={{ marginBottom: 20 }}>
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     color: Colors.black,
     fontSize: 24,
     fontFamily: "inter",
-    fontWeight: "500",
+    fontWeight: "600",
     marginBottom: 10,
   },
 });

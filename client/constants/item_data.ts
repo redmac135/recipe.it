@@ -64,4 +64,32 @@ export default { items : [
       category: "Freezer",
       quantity: 3
     },
+    {
+      name: "Farouk",
+      expiry_date: "2022-12-30",
+      unit: "g",
+      category: "Fridge",
+      quantity: 1,
+    },
+    {
+      name: "Checken Pot Pie Autn Nona Made In Montego Bay",
+      expiry_date: "2022-12-31",
+      unit: "g",
+      category: "Fridge",
+      quantity: 1,
+    },
+    {
+      name: "Eggs",
+      expiry_date: "2022-12-31",
+      unit: "units",
+      category: "Fridge",
+      quantity: 2
+    },
+    {
+      name: "Bread",
+      expiry_date: "2022-12-31",
+      unit: "loaves",
+      category: "Pantry",
+      quantity: 3
+    },
   ]};

@@ -44,7 +44,7 @@ const ItemButton = ({
         ></View>
         <View
           style={{
-            flex: 8,
+            flex: 7,
             justifyContent: "center",
           }}
         >
@@ -64,7 +64,8 @@ const ItemButton = ({
         </View>
         <View
           style={{
-            flex: 5,
+            flex: 6,
+            flexDirection: "row",
           }}
         >
           <View style={styles.container}>
@@ -86,6 +87,17 @@ const ItemButton = ({
               <Text style={styles.buttonText}>+</Text>
             </TouchableOpacity>
           </View>
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              paddingLeft: 7,
+            }}
+          >
+            <Text adjustsFontSizeToFit={true} numberOfLines={1}>
+              {unit}
+            </Text>
+          </View>
         </View>
       </View>
     </View>
@@ -101,21 +113,21 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: "#444",
     borderRadius: 20,
-    padding: 10,
-    width: 30,
-    height: 30,
+    //padding: 10,
+    width: 25,
+    height: 25,
     alignItems: "center",
     justifyContent: "center",
   },
   buttonText: {
     color: "#fff",
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: "bold",
   },
   countText: {
     fontSize: 17,
     fontWeight: "bold",
-    marginHorizontal: 15,
+    marginHorizontal: 7,
   },
 });
 
