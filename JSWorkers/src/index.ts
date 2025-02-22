@@ -1,8 +1,3 @@
-import { orkesConductorClient, TaskManager } from "@io-orkes/conductor-javascript";
-import parseReceiptTextWorker from "./workers/parseReceiptText.js";
-import parseReceiptTextWorker from "./workers/parseReceiptText.js";
-import recalcRecipesWorker from "./workers/recalcRecipes.js";
-import updateInventoryWorker from "./workers/updateInventory.js";
 import {
   orkesConductorClient,
   TaskManager,
@@ -11,7 +6,10 @@ import {
 import dotenv from "dotenv";
 dotenv.config();
 
+// import workers
 import parseReceiptTextWorker from "./workers/parseReceiptText";
+import recalcRecipesWorker from "./workers/recalcRecipes";
+// import updateInventoryWorker from "./workers/updateInventory";
 
 const config = {
   serverUrl: process.env.CONDUCTOR_SERVER_URL,
@@ -24,7 +22,6 @@ async function main() {
   const manager = new TaskManager(client, [
     parseReceiptTextWorker,
     recalcRecipesWorker,
-    updateInventoryWorker,
   ]);
   manager.startPolling();
   console.log("Orkes conductor polling started...");
