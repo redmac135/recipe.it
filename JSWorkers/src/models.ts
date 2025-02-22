@@ -20,19 +20,27 @@ export type GroceryItem = {
 
 export type Recipe = {
   name: string;
+  is_complete: boolean;
   ingredients_have_per_serving: {
     name: string;
     quantity: number;
     unit: string;
   }[];
-  ingredients_need_per_serving: {
+  existing_groceries_per_serving?: {
+    // for incomplete recipe
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  new_groceries_per_serving?: {
+    // for incomplete recipe
     name: string;
     quantity: number;
     unit: string;
   }[];
   max_servings: number;
-  estimated_cost: number;
-  steps: string[];
+  estimated_cost?: number; // for incomplete recipe
+  steps?: string[]; // for complete recipe
 };
 
 export type KitchenItem = {
