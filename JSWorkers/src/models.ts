@@ -14,22 +14,22 @@ export type GroceryItem = {
   ai_reason?: GroceryAIReasonEnum;
   estimated_cost?: number;
 
-  // if it is low quantity
-  recipe_to_complete?: {
-    name: string;
-    ingredients_have: { name: string; quantity: number; unit: string }[];
-    ingredients_purchasable: {
-      name: string;
-      minQuantity: number;
-      unit: string;
-    }[];
-    estimated_cost: number;
-  };
+  // if it to complete recipe
+  recipe_name?: string;
 };
 
 export type Recipe = {
   name: string;
-  ingredients_per_serving: { name: string; quantity: number; unit: string }[];
+  ingredients_have_per_serving: {
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  ingredients_need_per_serving: {
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
   max_servings: number;
   estimated_cost: number;
   steps: string[];
