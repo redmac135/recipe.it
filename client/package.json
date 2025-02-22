@@ -24,6 +24,7 @@
     "@mui/material": "^6.4.5",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "@reduxjs/toolkit": "^2.5.1",
     "client": "file:",
     "expo": "~52.0.37",
     "expo-blur": "~14.0.3",
@@ -47,7 +48,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-simple-dialogs": "^2.1.0",
     "react-native-web": "~0.19.13",
-    "react-native-webview": "13.12.5"
+    "react-native-webview": "13.12.5",
+    "react-redux": "^9.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

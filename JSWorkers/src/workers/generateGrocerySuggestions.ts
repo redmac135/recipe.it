@@ -65,3 +65,10 @@ ${groceryList
     },
   };
 }
+
+const generateGrocerySuggestionsWorker = {
+  taskDefName: "generate_grocery_suggestions",
+  execute: generateGrocerySuggestions,
+};
+
+export default generateGrocerySuggestionsWorker;

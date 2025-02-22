@@ -75,14 +75,14 @@ ${previouslyRejectedRecipes.map((recipe) => `- ${recipe}`).join("\n")}
   return {
     status: "COMPLETED",
     outputData: {
-      recipes: output,
+      recipe: output,
     },
   };
 }
 
-const generateCompleteRecipesWorker = {
+const generateCompleteRecipeWorker = {
   taskDefName: "generate_complete_recipes",
   execute: generateCompleteRecipe,
 };
 
-export default generateCompleteRecipesWorker;
+export default generateCompleteRecipeWorker;

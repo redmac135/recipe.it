@@ -7,9 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // import workers
-import parseReceiptTextWorker from "./workers/parseReceiptText";
-import recalcRecipesWorker from "./workers/recalcRecipes";
-// import updateInventoryWorker from "./workers/updateInventory";
+import workers from "./workers";
 
 const config = {
   serverUrl: process.env.CONDUCTOR_SERVER_URL,
@@ -19,10 +17,7 @@ const config = {
 
 async function main() {
   const client = await orkesConductorClient(config);
-  const manager = new TaskManager(client, [
-    parseReceiptTextWorker,
-    recalcRecipesWorker,
-  ]);
+  const manager = new TaskManager(client, workers);
   manager.startPolling();
   console.log("Orkes conductor polling started...");
 }

@@ -9,7 +9,7 @@ def get_recipes_workerFn():
     for doc in recipe_docs:
         recipes.append(doc.to_dict())
 
-    return {"Recipes": recipes}
+    return {"recipes": recipes}
 
 
 @worker_task(task_definition_name="get_kitchen_items")
@@ -20,7 +20,7 @@ def get_kitchen_items_workerFn():
     for doc in kitchen_docs:
         kitchen_items.append(doc.to_dict())
 
-    return {"KitchenItems": kitchen_items}
+    return {"kitchenItems": kitchen_items}
 
 
 @worker_task(task_definition_name="get_grocery_items")
@@ -31,4 +31,4 @@ def get_grocery_items_workerFn():
     for doc in grocery_docs:
         grocery_items.append(doc.to_dict())
 
-    return {"GroceryItems": grocery_items}
+    return {"groceryItems": grocery_items}
