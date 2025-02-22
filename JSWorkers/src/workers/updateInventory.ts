@@ -1,34 +1,98 @@
-import { orkesTaskWorker } from "@io-orkes/conductor-javascript";
-import db from "../firestore.js";
-import { convertUnits } from "../unitConversion.js";
+import { Task, TaskResult } from "@io-orkes/conductor-javascript";
+import { z } from "zod";
+import { GroceryItem, KitchenItem, Recipe } from "../models";
+import { generateWithSchema } from "../geminiAPI";
 
-export default orkesTaskWorker({
-    taskDefName: "updateInventory",
-    async execute(task) {
-        const { userId, recipe } = task.input;
-        const invDocRef = db.collection("KitchenInventory").doc(userId);
-        const invDoc = await invDocRef.get();
-        if (!invDoc.exists) throw new Error("Kitchen inventory not found for user");
-        const inventory = invDoc.data();
-        const updatedItems = inventory.items.map(item => {
-            const used = recipe.ingredients_have.find(
-                ing => ing.name.toLowerCase() === item.name.toLowerCase()
-            );
-            if (used) {
-                const currentQty = parseFloat(item.quantity);
-                const usedQty = parseFloat(used.quantity);
-                // Convert if needed; here we assume units are compatible or conversion is provided.
-                const convertedAmount = convertUnits(usedQty, used.unit, item.unit);
-                if (convertedAmount === null) {
-                    console.warn(`Skipping conversion for ${item.name}`);
-                    return item;
-                }
-                const newQty = Math.max(currentQty - convertedAmount, 0);
-                return { ...item, quantity: newQty.toString() };
-            }
-            return item;
-        });
-        await invDocRef.update({ items: updatedItems });
-        return { updatedInventory: updatedItems };
-    },
-});
+const systemPrompt = 
+`You are given two data structures: a Recipe object and an array of KitchenItem objects. 
+The Recipe object follows this schema:
+
+{
+  name: string;
+  is_complete: boolean;
+  ingredients_have_per_serving: {
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  existing_groceries_per_serving?: {
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  new_groceries_per_serving?: {
+    name: string;
+    quantity: number;
+    unit: string;
+  }[];
+  max_servings: number;
+  estimated_cost?: number;
+  steps?: string[];
+}
+
+The KitchenItem objects follow this schema:
+
+{
+  name: string;
+  quantity: number;
+  unit: string;
+  expiry_date: string; // YYYY-MM-DD
+}
+
+**Task**:
+1. For each ingredient in the recipe (e.g., 3 filets of salmon),
+   - Convert the recipe's unit to the kitchen's unit using the Gemini API. 
+     For example, if the recipe calls for "filets" and the kitchen item is in "kg," 
+     Gemini might say that 1 filet = 1.15 kg. So 3 filets = 3.45 kg.
+2. Once you have the converted amount, subtract it from the corresponding kitchen item's quantity.
+   - For instance, if the kitchen has 5 kg of salmon, and the recipe uses 3.45 kg, 
+     the new quantity is 5 - 3.45 = 1.55 kg.
+3. Update the kitchen items accordingly, reflecting the reduced quantities. 
+   - If an ingredient does not exist in the kitchen array, ignore it or note that it iss missing.
+   - If the kitchen item does not have enough quantity, note that as well.
+4. Return the updated array of KitchenItem objects in valid JSON format.
+
+**Example**:
+- Recipe calls for 3 filets of salmon.
+- Kitchen has 5 kg of salmon.
+- Gemini says 1 salmon filet = 1.15 kg, so 3 filets = 3.45 kg.
+- Subtract 3.45 kg from 5 kg → updated salmon item has 1.55 kg remaining.
+
+Please produce the final updated kitchen inventory as an array of KitchenItem objects in JSON.
+`;
+
+//////////////////////
+export type Recipe = {
+    name: string;
+    is_complete: boolean;
+    ingredients_have_per_serving: {
+        name: string;
+        quantity: number;
+        unit: string;
+    }[];
+    existing_groceries_per_serving?: {
+        // for incomplete recipe
+        name: string;
+        quantity: number;
+        unit: string;
+    }[];
+    new_groceries_per_serving?: {
+        // for incomplete recipe
+        name: string;
+        quantity: number;
+        unit: string;
+    }[];
+    max_servings: number;
+    estimated_cost?: number; // for incomplete recipe
+    steps?: string[]; // for complete recipe
+    };
+    
+    export type KitchenItem = {
+    name: string;
+    quantity: number;
+    unit: string;
+    expiry_date: string; // YYYY-MM-DD
+    };
+      
+
+
