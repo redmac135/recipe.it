@@ -1,13 +1,34 @@
-from ...backend.endpoints import get_recipes, get_kitchen_items, get_grocery_items
+from conductor.client.worker.worker_task import worker_task
+from .connectToDb import db
+
 
 @worker_task(task_definition_name="get_recipes")
 def get_recipes_workerFn():
-    return get_recipes()
+    recipes = []
+    recipe_docs = db.collection("Recipes").stream()
+    for doc in recipe_docs:
+        recipes.append(doc.to_dict())
+
+    return {"Recipes": recipes}
+
 
 @worker_task(task_definition_name="get_kitchen_items")
 def get_kitchen_items_workerFn():
-    return get_kitchen_items()
+    kitchen_items = []
+
+    kitchen_docs = db.collection("KitchenItems").stream()
+    for doc in kitchen_docs:
+        kitchen_items.append(doc.to_dict())
+
+    return {"KitchenItems": kitchen_items}
+
 
 @worker_task(task_definition_name="get_grocery_items")
 def get_grocery_items_workerFn():
-    return get_grocery_items()
+    grocery_items = []
+
+    grocery_docs = db.collection("GroceryItems").stream()
+    for doc in grocery_docs:
+        grocery_items.append(doc.to_dict())
+
+    return {"GroceryItems": grocery_items}
