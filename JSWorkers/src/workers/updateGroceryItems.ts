@@ -1,9 +1,8 @@
-// workers/updateGroceryItems.js
-import { orkesTaskWorker } from "@io-orkes/conductor-javascript";
+import { type TaskResult, type Task } from "@io-orkes/conductor-javascript";
 import db from "../firestore.js";
 import fetch from "node-fetch";
 
-async function getGroceryDetails(missingIngredients, apiKey) {
+async function getGroceryDetails(task:Task ): Promise<Omit<TaskResult, "workflowInstanceId" | "taskId">> {
     const prompt = `
 You are an expert grocery assistant.
 Given the following missing ingredients as JSON:
@@ -22,7 +21,7 @@ Return only a valid JSON string exactly in this format:
 Do not include any extra text.
   `;
 
-    const endpoint = "https://genai.googleapis.com/v1/models/gemini:predict"; // placeholder
+    const endpoint = "https://genai.googleapis.com/v1/models/gemini:predict"; // Model
     const payload = { prompt };
 
     const response = await fetch(endpoint, {
@@ -51,20 +50,57 @@ Do not include any extra text.
         throw new Error("Invalid JSON response from Gemini API");
     }
 }
+/////////////////////////////////
+//////////////////////////////
+/////////////////////////////
 
-export default orkesTaskWorker({
-    taskDefName: "updateGroceryItems",
-    async execute(task) {
-        // Expected input: { userId, missingIngredients: [ { name, quantity, unit }, ... ] }
-        const { userId, missingIngredients } = task.input;
-        if (!userId || !missingIngredients) {
-            throw new Error("Missing userId or missingIngredients in task input");
-        }
-        const apiKey = process.env.GOOGLE_GENAI_API_KEY;
-        if (!apiKey) throw new Error("GOOGLE_GENAI_API_KEY is not set");
+import { type TaskResult, type Task } from "@io-orkes/conductor-javascript";
+import db from "../firestore";
 
-        const groceryDetails = await getGroceryDetails(missingIngredients, apiKey);
-        await db.collection("GroceryItems").doc(userId).set(groceryDetails, { merge: true });
-        return { updatedGroceryItems: groceryDetails };
+async function getGroceryDetails(
+  task: Task,
+): Promise<Omit<TaskResult, "workflowInstanceId" | "taskId">> {
+  const userId = task.inputData?.userId;
+  const invDoc = await db.collection("KitchenInventory").doc(userId).get();
+  if (!invDoc.exists) throw new Error("Kitchen inventory not found for user");
+  const inventory = invDoc.data();
+
+  // In a real implementation, prepare an AI prompt with the inventory to generate recipes.
+  // For demonstration, we use a dummy response:
+  const dummyRecipes = {
+    complete: [
+      {
+        name: "Beef Bulgogi",
+        ingredients_have: [{ name: "BEEF", quantity: 200, unit: "g" }],
+      },
+    ],
+    incomplete: [
+      {
+        name: "Hamburger",
+        ingredients_have: [{ name: "GROUND BEEF", quantity: 150, unit: "g" }],
+        ingredients_purchasable: [
+          { name: "BUNS", minQuantity: 1, unit: "loaf" },
+        ],
+        estimated_cost: 11.92,
+        is_approved: false,
+      },
+    ],
+  };
+
+  await db.collection("Recipes").doc(userId).set(dummyRecipes);
+
+  return {
+    status: "COMPLETED",
+    outputData: {
+      ...dummyRecipes,
     },
-});
+  };
+}
+
+const recalcRecipesWorker = {
+  taskDefName: "recalc_recipes",
+  execute: recalcRecipes,
+};
+
+export default recalcRecipesWorker;
+
