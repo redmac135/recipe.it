@@ -43,23 +43,6 @@ def convert_units(amount: float, from_unit: str, to_unit: str) -> float:
     return amount * factor
 
 def process_receipt(receipt_text: str) -> dict:
-    """
-    Uses the Perplexity API to extract receipt data.
-    Expected JSON output format:
-      {
-        "purchase_date": "YYYY-MM-DD",
-        "items": [
-          {
-            "name": "Item Name",
-            "quantity": number,
-            "unit": "unit",   // e.g. "lb", "g", "ml", "l"
-            "expiry_date": "YYYY-MM-DD",
-            "days_left": number
-          },
-          ...
-        ]
-      }
-    """
     today = datetime.date.today().isoformat()
     prompt = f"""
 You are a helpful receipt data extraction assistant.
@@ -101,7 +84,6 @@ Receipt text:
     return data
 
 def sort_items_by_expiry(items: list) -> list:
-    """Return items sorted by days_left (lowest first)."""
     return sorted(items, key=lambda x: x['days_left'])
 
 def get_recipes(items: list) -> dict:
