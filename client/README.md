@@ -1,50 +1,47 @@
-# Welcome to your Expo app 👋
+# Client READme 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Our app's front end is build on React Native and Expo. You can either use the Expo Go app to run the applicaiton on your physical device, or you can run it on web. Both options are explained below:
 
 ## Get started
 
-1. Install dependencies
+1. Make sure you have completed the back end section first, so that you can load into the app and have everything work immediately.
+
+2. Clone the repository and navigate to the 'client' folder.
+
+3. Install dependencies
 
    ```bash
    npm install
    ```
 
-2. Start the app
+4. Start the app
 
    ```bash
     npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+Now, the app is up and running on the front end.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Physical Device
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Once you have started the application, a QR code should pop up in the terminal. 
 
-## Get a fresh project
+1. Log in to Expo Go
+2. Scan the QR Code (either through the Camera App or Expo Go itself)
 
-When you're ready, run:
+After a few seconds, the app should now be loaded on your phone.
 
-```bash
-npm run reset-project
-```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Web
 
-## Learn more
+To get to the mobile app running on the Web, you can either:
+1. Follow the link that says "Web is waiting on..."
+2. Type 'w' in the command line.
 
-To learn more about developing your project with Expo, look at the following resources:
+Once in the Web, since the app is designed for phone screens:
+1. Right-click and click 'Inspect' on Google Chrome.
+2. In the menu that popped up (most likely to the right of the screen), at the top left of the menu, there is an icon with a computer behind a phone. Click this to enter mobile dimensions (For the most accurate dimensions of our design, use iPhone 14 Pro Max).
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
 
-## Join the community
+# Enjoy Recipe.it 😊
 
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
