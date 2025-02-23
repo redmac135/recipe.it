@@ -1,5 +1,6 @@
+// ItemButton.tsx
+import React from "react";
 import { View, Text, StyleSheet } from "react-native";
-import React, { useState } from "react";
 import Colors from "../../constants/Colors";
 import { Checkbox } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -12,92 +13,97 @@ interface ButtonProps {
   ai: boolean;
 }
 
-const ItemButton = ({
-  name,
-  selected,
-  days_to_expire,
-  onPress,
-  ai,
-}: ButtonProps) => {
+const ItemButton = ({ name, selected, onPress, ai }: ButtonProps) => {
   return (
-    <View style={{ width: "100%", height: 70 }}>
+    <View style={styles.outerContainer}>
       <View
-        style={{
-          width: "100%",
-          height: 60,
-          borderRadius: 40,
-          borderWidth: 1,
-          borderColor: ai ? Colors.activity : Colors.black,
-          backgroundColor: ai ? Colors.white : Colors.button,
-          justifyContent: "center",
-          flexDirection: "row",
-          shadowColor: Colors.gray,
-          shadowOffset: {
-            width: 1,
-            height: 2,
+        style={[
+          styles.innerContainer,
+          {
+            borderColor: ai ? Colors.light.activity : Colors.light.black,
+            backgroundColor: ai ? Colors.light.white : Colors.light.button,
           },
-          shadowRadius: 3,
-          shadowOpacity: 1.0,
-        }}
+        ]}
       >
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+        {/* Left: Add icon or checkbox */}
+        <View style={styles.leftSection}>
           {ai ? (
             <MaterialIcons
               name="add"
               size={20}
-              color={Colors.activity}
+              color={Colors.light.activity}
               onPress={onPress}
             />
           ) : (
-            <View
-              style={{
-                borderWidth: 0.7,
-                borderColor: Colors.black,
-                borderRadius: 50,
-              }}
-            >
+            <View style={styles.checkboxBorder}>
               <Checkbox
                 status={selected ? "checked" : "unchecked"}
                 onPress={onPress}
-                color={Colors.black}
+                color={Colors.light.black}
               />
             </View>
           )}
         </View>
-        <View
-          style={{
-            flex: 4,
-            justifyContent: "center",
-          }}
-        >
+
+        {/* Middle: Item name */}
+        <View style={styles.middleSection}>
           <Text
-            style={{
-              fontSize: 20,
-              color: ai ? Colors.activity : Colors.black,
-              fontFamily: "inter",
-              fontWeight: "500",
-              letterSpacing: 0.5,
-            }}
+            style={[
+              styles.itemText,
+              { color: ai ? Colors.light.activity : Colors.light.black },
+            ]}
             adjustsFontSizeToFit={true}
             numberOfLines={2}
           >
             {name}
           </Text>
         </View>
-        <View
-          style={{
-            flex: 1,
-          }}
-        ></View>
+
+        {/* Right: empty space */}
+        <View style={{ flex: 1 }} />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  outerContainer: {
+    width: "100%",
+    height: 70,
+    marginBottom: 10,
+  },
+  innerContainer: {
+    width: "100%",
+    height: 60,
+    borderRadius: 40,
+    borderWidth: 1,
+    justifyContent: "center",
+    flexDirection: "row",
+    shadowColor: Colors.light.gray,
+    shadowOffset: { width: 1, height: 2 },
+    shadowRadius: 3,
+    shadowOpacity: 1.0,
+  },
+  leftSection: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkboxBorder: {
+    borderWidth: 0.7,
+    borderColor: Colors.light.black,
+    borderRadius: 50,
+  },
+  middleSection: {
+    flex: 4,
+    justifyContent: "center",
+  },
+  itemText: {
+    fontSize: 20,
+    fontFamily: "inter",
+    fontWeight: "500",
+    letterSpacing: 0.5,
+  },
+});
 
 export default ItemButton;
