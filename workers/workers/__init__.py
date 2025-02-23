@@ -6,3 +6,5 @@ from .uploadGroceriesDirect import *
 from .uploadGroceriesFromPartialRecipe import *
 from .uploadRecipeDirect import *
 from .uploadKitchenItemsDirect import *
+
+from .handleRecipeSelection import *
