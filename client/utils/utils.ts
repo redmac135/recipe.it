@@ -1,5 +1,5 @@
 export const fetchAPI = async (path: string, method: string, body?: string) => {
-  const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/${path}`, {
+  const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${path}`, {
     method: method,
     headers: {
       "Content-Type": "application/json",
