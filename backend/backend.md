@@ -19,12 +19,14 @@ https://firebase.google.com/docs/firestore/quickstart
 3. Activate the virtual environment
 
    ```bash
-   source .venv/bin/activate
+   source .venv/bin/activate #for mac and linux
+   ./.venv/Scripts/activate # for windows
    ```
 4. Install dependencies
 
     ```bash
-    pip3 install -r requirements.txt
+    pip3 install -r requirements.txt #for mac and linux
+    pip install -r requirements.txt #for windows
     ```
 
 4. Start the backend
