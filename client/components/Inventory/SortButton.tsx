@@ -20,13 +20,17 @@ const SortButton = ({
         marginHorizontal: 5,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: selected ? Colors.activity : Colors.white,
+        backgroundColor: selected ? Colors.light.activity : Colors.light.white,
         borderRadius: 20,
         borderWidth: 1,
-        borderColor: Colors.activity,
+        borderColor: Colors.light.activity,
       }}
     >
-      <Text style={{ color: !selected ? Colors.activity : Colors.white }}>
+      <Text
+        style={{
+          color: selected ? Colors.light.white : Colors.light.activity,
+        }}
+      >
         {text}
       </Text>
     </TouchableOpacity>
