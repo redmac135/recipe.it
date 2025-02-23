@@ -24,6 +24,17 @@ export const getRecipeList = createAsyncThunk(
   },
 );
 
+// Async thunk to execute a recipe
+export const executeRecipe = createAsyncThunk(
+  "recipe/executeRecipe",
+  async ({ recipe, servings }: { recipe: Recipe; servings: number }) => {
+    const data = JSON.stringify({ recipe, servings });
+    const response = await fetchAPI("recipes/execute", "POST", data);
+
+    return response;
+  },
+);
+
 // Slice for the recipe list
 const recipeSlice = createSlice({
   name: "recipe",
