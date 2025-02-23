@@ -11,6 +11,7 @@ export enum KitchenItemCategoryEnum {
 }
 
 export type GroceryItem = {
+  id: string;
   name: string;
   quantity: number;
   unit: string;
@@ -26,6 +27,7 @@ export type GroceryItem = {
 };
 
 export type Recipe = {
+  id: string;
   name: string;
   is_complete: boolean;
   ingredients_have_per_serving: {
@@ -51,6 +53,7 @@ export type Recipe = {
 };
 
 export type KitchenItem = {
+  id: string;
   name: string;
   category: KitchenItemCategoryEnum;
   quantity: number;

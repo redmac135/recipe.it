@@ -2,20 +2,22 @@ import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
 import ItemButton from "./ItemButton";
 import Colors from "../../constants/Colors";
-import { ButtonProps } from "@/state/inventory/inventorySlice";
 import { RootState } from "@/state/store";
 import { useSelector } from "react-redux";
+import { KitchenItem } from "@/types/models";
 
 interface SectionProps {
   name: string;
   alphabetical: boolean;
+  handleEdit: (item: KitchenItem) => void;
 }
 
-const Section = ({ name, alphabetical }: SectionProps) => {
-  const inventoryList = useSelector((state: RootState) => state.inventoryList)
-    .inventoryList;
+const Section = ({ name, alphabetical, handleEdit }: SectionProps) => {
+  const inventoryList = useSelector(
+    (state: RootState) => state.inventoryList
+  ).inventoryList;
 
-  const [newList, setNewList] = useState<ButtonProps[]>([]);
+  const [newList, setNewList] = useState<KitchenItem[]>([]);
 
   useEffect(() => {
     let tempList = Array.from(inventoryList);
@@ -32,7 +34,7 @@ const Section = ({ name, alphabetical }: SectionProps) => {
     <View style={styles.sectionContainer}>
       <Text style={styles.categoryTitle}>{name}</Text>
       {newList.map((item, index) =>
-        item.category === name ? (
+        item.category == name ? (
           <ItemButton
             key={index}
             unit={item.unit}
@@ -40,6 +42,7 @@ const Section = ({ name, alphabetical }: SectionProps) => {
             name={item.name}
             expiry_date={item.expiry_date}
             category={item.category}
+            handleEdit={() => handleEdit(item)}
           />
         ) : null
       )}

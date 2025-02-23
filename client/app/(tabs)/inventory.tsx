@@ -11,27 +11,47 @@ import * as Animatable from "react-native-animatable";
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import Section from "@/components/Inventory/Section";
-import data from "../../constants/item_data";
-import { useDispatch } from "react-redux";
-import { set } from "@/state/inventory/inventorySlice";
+import { getInventoryList, editInventoryItem } from "@/state/inventory/inventorySlice";
 import SortButton from "@/components/Inventory/SortButton";
+import { KitchenItem, KitchenItemCategoryEnum } from "@/types/models";
+import KitchenItemEditModal from "@/components/Inventory/KitchenItemEditModal";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { AppDispatch } from "@/state/store";
+import { useDispatch } from "react-redux";
 
 export default function Inventory() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const [selected, setSelected] = useState("Alphabetical");
-  const categories = ["Pantry", "Fridge", "Freezer"];
+  const categories = [KitchenItemCategoryEnum.PANTRY, KitchenItemCategoryEnum.FREEZER, KitchenItemCategoryEnum.FRIDGE];
 
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
 
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState<KitchenItem | null>(null);
+
+  const handleEdit = (item: KitchenItem) => {
+    console.log(item);
+    setCurrentItem(item);
+    setModalVisible(true);
+  }
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  }
+
+  const handleSave = (item: KitchenItem) => {
+    dispatch(editInventoryItem(item));
+    setModalVisible(false);
+  }
+
   useEffect(() => {
-    // Load testerItems into Redux state
-    dispatch(set(data.testerItems));
+    dispatch(getInventoryList());
   }, [dispatch]);
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <KitchenItemEditModal visible={isModalVisible} onClose={handleCloseModal} kitchenItem={currentItem} onSave={handleSave} />
       <Header name="Inventory" back={false} />
 
       {/* Sort bar */}
@@ -58,11 +78,11 @@ export default function Inventory() {
             duration={500}
             delay={index * 200}
           >
-            <Section name={category} alphabetical={selected === "Alphabetical"} />
+            <Section name={category} alphabetical={selected === "Alphabetical"} handleEdit={handleEdit} />
           </Animatable.View>
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </SafeAreaView >
   );
 }
 
