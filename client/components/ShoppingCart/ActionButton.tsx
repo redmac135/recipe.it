@@ -1,10 +1,11 @@
+// CustomButton.tsx
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import Colors from "../../constants/Colors";
 
 interface CustomButtonProps {
   text: string;
-  backgroundColor: string;
+  backgroundColor?: string;
   onPress: () => void;
   bottom: number;
 }
@@ -17,15 +18,13 @@ const CustomButton = ({
 }: CustomButtonProps) => {
   return (
     <TouchableOpacity
-      style={{
-        width: "75%",
-        borderRadius: 20,
-        alignItems: "center",
-        justifyContent: "center",
-        marginVertical: 10,
-        backgroundColor: Colors.activity,
-        height: 60,
-      }}
+      style={[
+        styles.buttonContainer,
+        {
+          backgroundColor: backgroundColor || Colors.light.activity,
+          marginBottom: bottom,
+        },
+      ]}
       onPress={onPress}
     >
       <Text style={styles.buttonText}>{text}</Text>
@@ -34,6 +33,14 @@ const CustomButton = ({
 };
 
 const styles = StyleSheet.create({
+  buttonContainer: {
+    width: "75%",
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 10,
+    height: 60,
+  },
   buttonText: {
     color: "#fff",
     fontSize: 22,

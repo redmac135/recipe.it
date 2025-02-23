@@ -1,3 +1,5 @@
+// receipt.tsx
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,28 +8,49 @@ import {
   useWindowDimensions,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import * as Animatable from "react-native-animatable";
+import * as ImagePicker from "expo-image-picker";
+import { Menu, MenuOptions, MenuOption, MenuTrigger } from "react-native-popup-menu";
+
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import StartButton from "@/components/Receipt/StartButton";
-import {
-  Menu,
-  MenuOptions,
-  MenuOption,
-  MenuTrigger,
-} from "react-native-popup-menu";
-import * as ImagePicker from "expo-image-picker";
+import { useColorScheme } from "@/hooks/useColorScheme";
 
-const receipt = () => {
+const Receipt = () => {
   const dimensions = useWindowDimensions();
-  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>(
-    undefined
-  );
+  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? "light"];
+
+  async function pickImage() {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setImage(result.assets[0]);
+    }
+  }
+
+  async function takeImage() {
+    try {
+      await ImagePicker.requestCameraPermissionsAsync();
+      let result = await ImagePicker.launchCameraAsync({
+        cameraType: ImagePicker.CameraType.back,
+      });
+      if (!result.canceled) {
+        setImage(result.assets[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
-      <Header name={"Scan Receipt"} back={false} />
-      <View style={{ flex: 1 }}>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+      <Header name="Scan Receipt" back={false} />
+      <Animatable.View animation="fadeIn" duration={600} style={{ flex: 1 }}>
         <Menu
           style={{
             flex: 1,
@@ -47,75 +70,50 @@ const receipt = () => {
             optionsContainerStyle={{
               position: "absolute",
               borderWidth: 1,
-              borderColor: "black",
+              borderColor: theme.white,
+              backgroundColor: theme.background,
+              borderRadius: 6,
             }}
           >
             <MenuOption onSelect={() => takeImage()} text="Camera" />
-            <MenuOption
-              onSelect={() => pickImage()}
-              text="Library"
-            ></MenuOption>
+            <MenuOption onSelect={() => pickImage()} text="Library" />
           </MenuOptions>
         </Menu>
-        <View
-          style={{
-            flex: 2,
-            justifyContent: "flex-start",
-            alignItems: "center",
-          }}
-        >
-          <Text style={styles.title}>Picture:</Text>
+
+        <View style={styles.imageContainer}>
+          <Text style={[styles.title, { color: theme.white }]}>Picture:</Text>
           {image ? (
             <Image
               source={image}
               style={{
                 maxHeight: "80%",
                 maxWidth: "75%",
-                objectFit: "contain",
+                resizeMode: "contain",
               }}
             />
           ) : (
-            <Text style={styles.subtitle}>Please Scan{"\n"}Your Receipt!</Text>
+            <Text style={[styles.subtitle, { color: theme.white }]}>
+              Please Scan{"\n"}Your Receipt!
+            </Text>
           )}
         </View>
-      </View>
+      </Animatable.View>
     </SafeAreaView>
   );
-
-  async function pickImage() {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ["images"],
-      quality: 1,
-    });
-
-    console.log(result);
-    if (!result.canceled) {
-      setImage(result.assets[0]);
-    }
-  }
-
-  async function takeImage() {
-    try {
-      await ImagePicker.requestCameraPermissionsAsync();
-      let result = await ImagePicker.launchCameraAsync({
-        cameraType: ImagePicker.CameraType.back,
-      });
-
-      if (!result.canceled) {
-        setImage(result.assets[0]);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  imageContainer: {
+    flex: 2,
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
   title: {
     textAlign: "center",
     fontSize: 34,
-    color: Colors.black,
     fontFamily: "inter",
     fontWeight: "500",
     marginBottom: 20,
@@ -123,10 +121,9 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 24,
     textAlign: "center",
-    color: Colors.black,
     fontFamily: "inter",
     fontWeight: "400",
   },
 });
 
-export default receipt;
+export default Receipt;
