@@ -4,12 +4,6 @@ export enum GroceryAIReasonEnum {
   COMPLETE_RECIPE = "COMPLETE_RECIPE",
 }
 
-export enum KitchenItemCategoryEnum {
-  PANTRY = "PANTRY",
-  FRIDGE = "FRIDGE",
-  FREEZER = "FREEZER",
-}
-
 export type GroceryItem = {
   name: string;
   quantity: number;
@@ -52,7 +46,6 @@ export type Recipe = {
 
 export type KitchenItem = {
   name: string;
-  category: KitchenItemCategoryEnum;
   quantity: number;
   unit: string;
   expiry_date: string; // YYYY-MM-DD

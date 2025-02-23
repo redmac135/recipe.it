@@ -1,10 +1,16 @@
 import { z } from "zod";
 import { generateWithSchema } from "../geminiAPI";
 import { type TaskResult, type Task } from "@io-orkes/conductor-javascript";
+import { KitchenItemCategoryEnum } from "../models";
 
 const boughtSchema = z.array(
   z.object({
     name: z.string(),
+    category: z.enum([
+      KitchenItemCategoryEnum.FRIDGE,
+      KitchenItemCategoryEnum.FREEZER,
+      KitchenItemCategoryEnum.PANTRY,
+    ]),
     quantity: z.number(),
     unit: z.string(),
     expiry_date: z.string(),
@@ -27,6 +33,8 @@ Return your answer in JSON format with these keys:
       "quantity": the amount (in units) purchased,
       "units": the unit of measurements (per breast, per kg, per mL, etc),
       "expiry_date": the estimated expiry date (YYYY-MM-DD)
+
+additionally, please add a "category" field to indicate where it should be stored ("FRIDGE", "FREEZER", or "PANTRY").
 
 if the units and quantity are unknown, please put forward your best guess.
 

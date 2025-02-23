@@ -44,6 +44,7 @@ class Recipe:
 @dataclass
 class KitchenItem:
     name: str
+    category: str
     quantity: float
     unit: str
     expiry_date: str
