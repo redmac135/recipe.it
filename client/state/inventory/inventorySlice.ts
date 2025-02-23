@@ -80,6 +80,9 @@ const inventorySlice = createSlice({
           }
           return item;
         });
+        state.inventoryList = state.inventoryList.filter((item) => {
+          return item.quantity > 0;
+        });
       });
   },
 });
