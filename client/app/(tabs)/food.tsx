@@ -13,11 +13,17 @@ import Header from "@/components/Header";
 import { DeckSwiper } from "expo-deck-swiper";
 import data from "../../constants/item_data";
 import { Button } from "react-native-paper";
+import { useSelector } from "react-redux";
+import { RootState } from "@/state/store";
 
 const Food = () => {
   const dimensions = useWindowDimensions();
   const [items, setItems] = useState<foodRecipes[]>(data.recipeItems);
   const [count, setCount] = useState(1);
+
+  const recipeList = useSelector(
+    (state: RootState) => state.recipeList
+  ).recipeList;
 
   const firstColour = "#f04a5e";
   const secondColour = "#642ce9";
@@ -162,7 +168,7 @@ const Food = () => {
                 onPress={() => console.log("Pressed")}
                 textColor={"white"}
               >
-                Ingredients Per Serving
+                Cooking Steps
               </Button>
             </View>
           )}
