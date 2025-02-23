@@ -24,8 +24,8 @@ const Section = ({ name, alphabetical }: SectionProps) => {
     alphabetical
       ? setNewList(tempList.sort((a, b) => a.name.localeCompare(b.name)))
       : setNewList(
-          tempList.sort((a, b) => a.expiry_date.localeCompare(b.expiry_date))
-        );
+        tempList.sort((a, b) => a.expiry_date.localeCompare(b.expiry_date))
+      );
   }, [inventoryList, alphabetical]);
 
   return (
