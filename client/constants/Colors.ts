@@ -1,3 +1,5 @@
+const tintColorLight = '#0a7ea4';
+
 // Colors.ts
 const Colors = {
   light: {
@@ -9,6 +11,7 @@ const Colors = {
     black: "#000000",
     white: "#FFFFFF",
     gray: "#888888",
+    tint: tintColorLight,
 
     // For existing references
     activity: "#f04a5e",  // default accent color

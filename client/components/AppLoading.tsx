@@ -6,7 +6,7 @@ import Colors from "../constants/Colors";
 const AppLoading = () => {
   return (
     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <ActivityIndicator size="large" color={Colors.activity} />
+      <ActivityIndicator size="large" color={Colors.light.activity} />
     </View>
   );
 };
