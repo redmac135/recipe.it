@@ -1,0 +1,28 @@
+{
+  "createTime": 1740300759340,
+  "updateTime": 1740300759340,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "execute_recipe",
+  "description": "cook a recipe, deducing the appropriate resources from kitchen stores.",
+  "retryCount": 1,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "recipe",
+    "servings"
+  ],
+  "outputKeys": [],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 15,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}

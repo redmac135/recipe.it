@@ -1,0 +1,27 @@
+{
+  "createTime": 1740238401971,
+  "updateTime": 1740238401971,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "get_kitchen_items",
+  "description": "get all kitchen items from firestore.",
+  "retryCount": 3,
+  "timeoutSeconds": 3600,
+  "inputKeys": [],
+  "outputKeys": [
+    "kitchenItems"
+  ],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 60,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}

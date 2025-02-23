@@ -1,0 +1,27 @@
+{
+  "createTime": 1740249270596,
+  "updateTime": 1740249270596,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "upload_groceries_from_partial_recipe",
+  "description": "upload groceries from partial recipes.",
+  "retryCount": 1,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "recipe"
+  ],
+  "outputKeys": [],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 15,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}
