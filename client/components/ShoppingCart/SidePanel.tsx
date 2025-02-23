@@ -21,8 +21,15 @@ export default function SidePanel({ item, onClose }: SidePanelProps) {
             </Text>
 
             <Text style={styles.itemSubtitle}>
-                {item.ai_reason ?? "No Item Selected"}
+                {item.ai_reason === "LOW_QUANTITY"
+                    ? "You are running low on this item"
+                    : item.ai_reason === "AI_OTHER"
+                        ? "AI recommends this item."
+                        : item.ai_reason === "COMPLETE_RECIPE"
+                            ? "This completes a recipe."
+                            : ""}
             </Text>
+
             <Text style={styles.itemSubtitle}>
                 {item.ai_reason_details ?? "No Item Selected"}
             </Text>
