@@ -7,6 +7,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   Image,
+  ScrollView,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import * as ImagePicker from "expo-image-picker";
@@ -83,7 +84,7 @@ const Receipt = () => {
 
       if (response.ok) {
         console.log("Receipt uploaded successfully!");
-        return router.replace('/inventory');
+        return router.replace("/inventory");
       } else {
         console.log("Error uploading receipt.");
       }
@@ -128,16 +129,20 @@ const Receipt = () => {
         </Menu>
 
         <View style={styles.imageContainer}>
-          <Text style={[styles.title, { color: theme.white, marginTop: 35 }]}>Picture:</Text>
+          <Text style={[styles.title, { color: theme.white, marginTop: 35 }]}>
+            Picture:
+          </Text>
           {image ? (
-            <Image
-              source={image}
-              style={{
-                maxHeight: "80%",
-                maxWidth: "75%",
-                resizeMode: "contain",
-              }}
-            />
+            <ScrollView>
+              <Image
+                source={image}
+                style={{
+                  maxHeight: "80%",
+                  maxWidth: "75%",
+                  resizeMode: "contain",
+                }}
+              />
+            </ScrollView>
           ) : (
             <Text style={[styles.subtitle, { color: theme.white }]}>
               Please Scan{"\n"}Your Receipt!
