@@ -1,9 +1,18 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Colors from "../../constants/Colors";
-import { ButtonProps } from "@/state/inventory/inventorySlice";
+import { KitchenItem } from "@/types/models";
 import { useDispatch } from "react-redux";
-import { removeQ, addQ } from "@/state/inventory/inventorySlice";
+import KitchenItemEditModal from "./KitchenItemEditModal"
+
+interface ItemButtonProps {
+  name: string;
+  expiry_date: string;
+  unit: string;
+  category: string;
+  quantity: number;
+  handleEdit: () => void;
+}
 
 const ItemButton = ({
   name,
@@ -11,7 +20,8 @@ const ItemButton = ({
   unit,
   category,
   quantity,
-}: ButtonProps) => {
+  handleEdit,
+}: ItemButtonProps) => {
   const dispatch = useDispatch();
 
   return (
@@ -72,7 +82,7 @@ const ItemButton = ({
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                dispatch(removeQ(name));
+                handleEdit();
               }}
             >
               <Text style={styles.buttonText}>-</Text>
@@ -81,7 +91,7 @@ const ItemButton = ({
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
-                dispatch(addQ(name));
+                return;
               }}
             >
               <Text style={styles.buttonText}>+</Text>

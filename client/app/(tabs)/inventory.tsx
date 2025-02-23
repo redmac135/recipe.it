@@ -6,9 +6,10 @@ import Section from "@/components/Inventory/Section";
 import data from "../../constants/item_data";
 import { AppDispatch, RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonProps, getInventoryList, set } from "@/state/inventory/inventorySlice";
+import { getInventoryList, editInventoryItem } from "@/state/inventory/inventorySlice";
 import SortButton from "@/components/Inventory/SortButton";
-import { KitchenItemCategoryEnum } from "@/types/models";
+import { KitchenItem, KitchenItemCategoryEnum } from "@/types/models";
+import KitchenItemEditModal from "@/components/Inventory/KitchenItemEditModal";
 
 /** 
   Inventory Screen For The App
@@ -16,9 +17,26 @@ import { KitchenItemCategoryEnum } from "@/types/models";
 export default function Inventory() {
   const dispatch = useDispatch<AppDispatch>();
 
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState<KitchenItem | null>(null);
+
+  const handleEdit = (item: KitchenItem) => {
+    console.log(item);
+    setCurrentItem(item);
+    setModalVisible(true);
+  }
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  }
+
+  const handleSave = (item: KitchenItem) => {
+    dispatch(editInventoryItem(item));
+    setModalVisible(false);
+  }
+
   useEffect(() => {
     dispatch(getInventoryList());
-    console.log("Getting inventory list");
   });
 
   const [selected, setSelected] = useState("Alphabetical");
@@ -27,6 +45,7 @@ export default function Inventory() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
+      <KitchenItemEditModal visible={isModalVisible} onClose={handleCloseModal} kitchenItem={currentItem} onSave={handleSave} />
       <Header name={"Inventory"} back={false} />
       <View
         style={{
@@ -79,6 +98,7 @@ export default function Inventory() {
                 key={index}
                 name={category}
                 alphabetical={selected === "Alphabetical"}
+                handleEdit={handleEdit}
               />
             );
           })}

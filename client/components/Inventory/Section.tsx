@@ -9,9 +9,10 @@ import { KitchenItem } from "@/types/models";
 interface SectionProps {
   name: string;
   alphabetical: boolean;
+  handleEdit: (item: KitchenItem) => void;
 }
 
-const Section = ({ name, alphabetical }: SectionProps) => {
+const Section = ({ name, alphabetical, handleEdit }: SectionProps) => {
   const inventoryList = useSelector(
     (state: RootState) => state.inventoryList
   ).inventoryList;
@@ -40,6 +41,7 @@ const Section = ({ name, alphabetical }: SectionProps) => {
             name={item.name}
             expiry_date={item.expiry_date}
             category={item.category}
+            handleEdit={() => handleEdit(item)}
           />
         ) : null
       )}
