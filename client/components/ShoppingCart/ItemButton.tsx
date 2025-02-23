@@ -1,20 +1,23 @@
 // ItemButton.tsx
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import Colors from "../../constants/Colors";
 import { Checkbox } from "react-native-paper";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { GroceryItem } from "@/types/models";
 
 interface ButtonProps {
-  name: string;
+  item: GroceryItem;
   selected?: boolean;
   days_to_expire?: number;
   onPress: () => void;
+  onInfo: (id: string) => void;
   ai: boolean;
 }
 
-const ItemButton = ({ name, selected, onPress, ai }: ButtonProps) => {
+const ItemButton = ({ item, selected, onPress, onInfo, ai }: ButtonProps) => {
   return (
+
     <View style={styles.outerContainer}>
       <View
         style={[
@@ -47,20 +50,19 @@ const ItemButton = ({ name, selected, onPress, ai }: ButtonProps) => {
 
         {/* Middle: Item name */}
         <View style={styles.middleSection}>
-          <Text
-            style={[
-              styles.itemText,
-              { color: ai ? Colors.light.activity : Colors.light.black },
-            ]}
-            adjustsFontSizeToFit={true}
-            numberOfLines={2}
-          >
-            {name}
-          </Text>
+          <Pressable onPress={() => onInfo(item.id)}>
+            <Text
+              style={[
+                styles.itemText,
+                { color: ai ? Colors.light.activity : Colors.light.black },
+              ]}
+              adjustsFontSizeToFit={true}
+              numberOfLines={2}
+            >
+              {item.name}
+            </Text>
+          </Pressable>
         </View>
-
-        {/* Right: empty space */}
-        <View style={{ flex: 1 }} />
       </View>
     </View>
   );
