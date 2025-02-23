@@ -4,6 +4,8 @@ Our app's front end is build on React Native and Expo. You can either use the Ex
 
 ## Get started
 
+0. install the "Expo" app on your mobile device
+
 1. Make sure you have completed the back end section first, so that you can load into the app and have everything work immediately.
 
 2. Clone the repository and navigate to the 'client' folder.
