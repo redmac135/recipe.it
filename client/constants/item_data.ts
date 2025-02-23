@@ -95,6 +95,7 @@ export default { items : [
   ],
    recipeItems : [
     {
+      id: "1",
       name: "Spaghetti Bolognese",
       is_complete: true,
       ingredients_have_per_serving: [
@@ -106,6 +107,7 @@ export default { items : [
       steps: ["Boil spaghetti", "Cook ground beef", "Add tomato sauce", "Mix together"],
     },
     {
+      id: "2",
       name: "Chicken Salad",
       is_complete: true,
       ingredients_have_per_serving: [
@@ -117,6 +119,7 @@ export default { items : [
       steps: ["Grill chicken", "Chop lettuce and tomatoes", "Mix together"],
     },
     {
+      id: "3",
       name: "Pancakes",
       is_complete: true,
       ingredients_have_per_serving: [
@@ -128,6 +131,7 @@ export default { items : [
       steps: ["Mix ingredients", "Cook on skillet", "Serve with syrup"],
     },
     {
+      id:"4",
       name: "Beef Stew",
       is_complete: false,
       ingredients_have_per_serving: [
@@ -143,56 +147,6 @@ export default { items : [
       ],
       max_servings: 5,
       estimated_cost: 15,
-    },
-    {
-      name: "Vegetable Stir Fry",
-      is_complete: true,
-      ingredients_have_per_serving: [
-        { name: "Broccoli", quantity: 100, unit: "g" },
-        { name: "Bell Peppers", quantity: 100, unit: "g" },
-        { name: "Soy Sauce", quantity: 50, unit: "ml" },
-      ],
-      max_servings: 4,
-      steps: ["Chop vegetables", "Stir fry with soy sauce", "Serve hot"],
-    },
-    {
-      name: "Grilled Cheese Sandwich",
-      is_complete: true,
-      ingredients_have_per_serving: [
-        { name: "Bread", quantity: 2, unit: "slices" },
-        { name: "Cheese", quantity: 2, unit: "slices" },
-        { name: "Butter", quantity: 10, unit: "g" },
-      ],
-      max_servings: 1,
-      steps: ["Butter bread", "Add cheese", "Grill until golden brown"],
-    },
-    {
-      name: "Tacos",
-      is_complete: false,
-      ingredients_have_per_serving: [
-        { name: "Tortillas", quantity: 2, unit: "pcs" },
-        { name: "Ground Beef", quantity: 100, unit: "g" },
-      ],
-      existing_groceries_per_serving: [
-        { name: "Tortillas", quantity: 2, unit: "pcs" },
-      ],
-      new_groceries_per_serving: [
-        { name: "Lettuce", quantity: 50, unit: "g" },
-        { name: "Cheese", quantity: 50, unit: "g" },
-      ],
-      max_servings: 3,
-      estimated_cost: 10,
-    },
-    {
-      name: "Fruit Smoothie",
-      is_complete: true,
-      ingredients_have_per_serving: [
-        { name: "Banana", quantity: 1, unit: "pcs" },
-        { name: "Strawberries", quantity: 100, unit: "g" },
-        { name: "Yogurt", quantity: 200, unit: "ml" },
-      ],
-      max_servings: 2,
-      steps: ["Blend all ingredients", "Serve chilled"],
     },
   ]
 };

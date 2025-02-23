@@ -1,35 +1,29 @@
-import { View, Text, SafeAreaView } from "react-native";
+import { View, Text, SafeAreaView, useWindowDimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import { DeckSwiper } from "expo-deck-swiper";
 import data from "../../constants/item_data";
 
-const food = () => {
-  const [items, setItems] = useState<foodRecipes[]>([]);
+const Food = () => {
+  const dimensions = useWindowDimensions();
+  const [items, setItems] = useState<foodRecipes[]>(data.recipeItems);
 
-  useEffect(() => {
-    if (data.recipeItems && Array.isArray(data.recipeItems)) {
-      const newList = data.recipeItems.map((food, index) => {
-        return { id: index.toString(), ...food };
-      });
-      setItems(newList);
-      console.log(newList);
-    } else {
-      console.error("data.recipeItems is not an array");
-    }
-  }, []);
-
+  /**
+   * #f04a5e, #642ce9, #4e7afd
+   */
   console.log(items);
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: Colors.background,
+      }}
+    >
       <Header name={"Recipes"} back={false} />
       <View
         style={{
           flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-          backgroundColor: "green",
         }}
       >
         <DeckSwiper
@@ -38,15 +32,20 @@ const food = () => {
             <View
               style={{
                 backgroundColor: Colors.black,
-                width: "50%",
-                height: "70%",
+                height: "100%",
                 justifyContent: "center",
                 alignItems: "center",
                 padding: 20,
                 borderRadius: 10,
               }}
             >
-              <Text style={{ color: Colors.white, fontSize: 50 }}>
+              <Text
+                style={{
+                  textAlign: "center",
+                  color: Colors.white,
+                  fontSize: 40,
+                }}
+              >
                 {item.name}
               </Text>
             </View>
@@ -85,4 +84,4 @@ export interface foodRecipes {
   steps?: string[]; // for complete recipe
 }
 
-export default food;
+export default Food;
