@@ -21,6 +21,7 @@ import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import StartButton from "@/components/Receipt/StartButton";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { router } from "expo-router";
 
 const Receipt = () => {
   const dimensions = useWindowDimensions();
@@ -81,6 +82,7 @@ const Receipt = () => {
 
       if (response.ok) {
         console.log("Receipt uploaded successfully!");
+        return router.replace('/inventory');
       } else {
         console.log("Error uploading receipt.");
       }
@@ -125,7 +127,7 @@ const Receipt = () => {
         </Menu>
 
         <View style={styles.imageContainer}>
-          <Text style={[styles.title, { color: theme.white, marginTop: 35  }]}>Picture:</Text>
+          <Text style={[styles.title, { color: theme.white, marginTop: 35 }]}>Picture:</Text>
           {image ? (
             <Image
               source={image}
