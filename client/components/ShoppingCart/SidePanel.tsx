@@ -40,7 +40,7 @@ export default function SidePanel({ item, onClose }: SidePanelProps) {
         <View style={styles.panelContainer}>
             <Text style={styles.title}>{item.name}</Text>
 
-            <Text style={styles.itemName}>{item.id}</Text>
+            <Text style={styles.itemSubtitle}>{item.quantity} {item.unit}s left</Text>
 
             {item.ai_reason ? (
                 <View style={styles.blueBox}>
