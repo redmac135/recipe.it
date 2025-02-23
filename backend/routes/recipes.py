@@ -21,7 +21,8 @@ async def list_recipes():
 
 
 @router.post("/execute")
-async def execute_recipe(recipe: dict, servings: int | None):
+async def execute_recipe(recipe: dict):
+    servings = 1
     Conductor.execute_sync_workflow(
         "handle_recipe_execution", {"recipe": recipe, "servings": servings}
     )

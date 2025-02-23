@@ -22,6 +22,7 @@ const Food = () => {
 
   const [items, setItems] = useState<Recipe[]>([]);
   const [currIdx, setCurrIdx] = useState<number>(4);
+  const [currItem, setCurrItem] = useState<Recipe | null>(null);
   const [count, setCount] = useState(1);
   const [firstDialog, setFirstDialog] = useState(false);
   const [secondDialog, setSecondDialog] = useState(false);
@@ -47,6 +48,10 @@ const Food = () => {
       dispatch(getRecipeList());
     }, [dispatch])
   );
+
+  useEffect(() => {
+    console.log(currItem);
+  }, [currItem]);
 
   useEffect(() => {
     dispatch(getRecipeList());
@@ -313,10 +318,14 @@ const Food = () => {
                       marginTop: 20,
                       borderRadius: 20,
                     }}
-                    onPress={() => setThirdDialog(true)}
+                    onPress={() => {
+                      setCurrItem(item);
+                      setThirdDialog(true)
+                      dispatch(executeRecipe({ recipe: item, servings: count }));
+                    }}
                     textColor={"white"}
                   >
-                    Cooking Steps
+                    Start Cooking
                   </Button>
                 </View>
               </>

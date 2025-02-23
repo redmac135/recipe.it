@@ -4,10 +4,11 @@ from .lib.models import Recipe
 
 
 @worker_task(task_definition_name="execute_recipe")
-def execute_recipe_workerFn(recipe: Recipe, servings: int):
+def execute_recipe_workerFn(recipe: Recipe):
     # decrement the quantity of each ingredient in the recipe
     for ingredient in recipe.ingredients_have_per_serving:
         # 1. search for this ingredient name in the kitchen items
+        print(ingredient)
         kitchenitem_docs = (
             db.collection("KitchenItems").where("name", "==", ingredient.name).stream()
         )
@@ -23,7 +24,7 @@ def execute_recipe_workerFn(recipe: Recipe, servings: int):
         if kitchenitem is None:
             continue
 
-        kitchenitem["quantity"] += ingredient.quantity * servings
+        kitchenitem["quantity"] += ingredient.quantity
 
         if kitchenitem["quantity"] <= 0:
             db.collection("KitchenItems").document(kitchenitem_docs[0].id).delete()
