@@ -23,6 +23,7 @@ import Header from "@/components/Header";
 import StartButton from "@/components/Receipt/StartButton";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { router } from "expo-router";
+import { white } from "react-native-paper/lib/typescript/styles/themes/v2/colors";
 
 const Receipt = () => {
   const dimensions = useWindowDimensions();
@@ -118,7 +119,7 @@ const Receipt = () => {
               position: "absolute",
               borderWidth: 1,
               borderColor: theme.white,
-              backgroundColor: theme.background,
+              backgroundColor: "#f04a5e",
               borderRadius: 6,
             }}
           >

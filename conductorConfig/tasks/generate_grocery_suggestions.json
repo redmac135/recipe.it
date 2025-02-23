@@ -1,0 +1,30 @@
+{
+  "createTime": 1740238153087,
+  "updateTime": 1740238153087,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "generate_grocery_suggestions",
+  "description": "generates grocery suggestions based on an inventory list and existing grocery list.",
+  "retryCount": 3,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "inventory",
+    "groceryList"
+  ],
+  "outputKeys": [
+    "grocerySuggestions"
+  ],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 60,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}

@@ -1,0 +1,103 @@
+{
+  "createTime": 1740191130544,
+  "updateTime": 1740274618383,
+  "name": "receipt_upload",
+  "description": "upload receipts",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "receipt_image_to_text",
+      "taskReferenceName": "image_to_text",
+      "inputParameters": {
+        "image_base64": "${workflow.input.image_base64}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "parse_receipt_text",
+      "taskReferenceName": "parse_receipt_text_ref",
+      "inputParameters": {
+        "receipt_text": "${image_to_text.output.extracted_text}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "upload_kitchenitems_direct",
+      "taskReferenceName": "upload_kitchenitems_direct_ref",
+      "inputParameters": {
+        "kitchenitems": "${parse_receipt_text_ref.output.bought}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "start_workflow",
+      "taskReferenceName": "start_workflow_ref",
+      "inputParameters": {
+        "startWorkflow": {
+          "name": "handle_inventory_change",
+          "input": {},
+          "version": 1
+        }
+      },
+      "type": "START_WORKFLOW",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    }
+  ],
+  "inputParameters": [
+    "image_base64"
+  ],
+  "outputParameters": {},
+  "failureWorkflow": "",
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {},
+  "enforceSchema": true
+}

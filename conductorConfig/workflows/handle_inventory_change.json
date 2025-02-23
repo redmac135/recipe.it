@@ -1,0 +1,415 @@
+{
+  "createTime": 1740257512831,
+  "updateTime": 1740264442746,
+  "name": "handle_inventory_change",
+  "description": "To be executed every time the inventory changes.",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "wipe_all_ai_suggestions",
+      "taskReferenceName": "clear_task",
+      "inputParameters": {},
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "get_kitchen_items",
+      "taskReferenceName": "kitchen_list",
+      "inputParameters": {},
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "get_grocery_items",
+      "taskReferenceName": "grocery_list",
+      "inputParameters": {},
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "set_variable",
+      "taskReferenceName": "vars_init",
+      "inputParameters": {
+        "generated_recipe_names": "",
+        "loop1_break": false,
+        "loop2_break": false,
+        "loop3_break": false
+      },
+      "type": "SET_VARIABLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "do_while",
+      "taskReferenceName": "do_while_ref",
+      "inputParameters": {
+        "number": 7,
+        "shouldBreak": "${workflow.variables.loop1_break}"
+      },
+      "type": "DO_WHILE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopCondition": "(function () {\n  if ($.shouldBreak) {\n    return false;\n  }\n  if ($.do_while_ref['iteration'] < $.number) {\n    return true;\n  }\n  return false;\n})();",
+      "loopOver": [
+        {
+          "name": "generate_complete_recipes",
+          "taskReferenceName": "complete_recipe_gen",
+          "inputParameters": {
+            "inventory": "${kitchen_list.output.kitchenItems}",
+            "previousRecipes": "${workflow.variables.generated_recipe_names}"
+          },
+          "type": "SIMPLE",
+          "decisionCases": {},
+          "defaultCase": [],
+          "forkTasks": [],
+          "startDelay": 0,
+          "joinOn": [],
+          "optional": false,
+          "defaultExclusiveJoinTask": [],
+          "asyncComplete": false,
+          "loopOver": [],
+          "onStateChange": {},
+          "permissive": false
+        },
+        {
+          "name": "switch",
+          "taskReferenceName": "switch_ref",
+          "inputParameters": {
+            "switchCaseValue": "${complete_recipe_gen.output.no_more_recipes}"
+          },
+          "type": "SWITCH",
+          "decisionCases": {
+            "false": [
+              {
+                "name": "upload_recipe_direct",
+                "taskReferenceName": "upload_complete_recipe",
+                "inputParameters": {
+                  "recipe": "${complete_recipe_gen.output.recipe}"
+                },
+                "type": "SIMPLE",
+                "decisionCases": {},
+                "defaultCase": [],
+                "forkTasks": [],
+                "startDelay": 0,
+                "joinOn": [],
+                "optional": false,
+                "defaultExclusiveJoinTask": [],
+                "asyncComplete": false,
+                "loopOver": [],
+                "onStateChange": {},
+                "permissive": false
+              },
+              {
+                "name": "set_variable_2",
+                "taskReferenceName": "set_variable_ref_2",
+                "inputParameters": {
+                  "generated_recipe_names": "${complete_recipe_gen.output.running_recipes}"
+                },
+                "type": "SET_VARIABLE",
+                "decisionCases": {},
+                "defaultCase": [],
+                "forkTasks": [],
+                "startDelay": 0,
+                "joinOn": [],
+                "optional": false,
+                "defaultExclusiveJoinTask": [],
+                "asyncComplete": false,
+                "loopOver": [],
+                "onStateChange": {},
+                "permissive": false
+              }
+            ]
+          },
+          "defaultCase": [
+            {
+              "name": "set_variable_1",
+              "taskReferenceName": "set_variable_ref_1",
+              "inputParameters": {
+                "loop1_break": true
+              },
+              "type": "SET_VARIABLE",
+              "decisionCases": {},
+              "defaultCase": [],
+              "forkTasks": [],
+              "startDelay": 0,
+              "joinOn": [],
+              "optional": false,
+              "defaultExclusiveJoinTask": [],
+              "asyncComplete": false,
+              "loopOver": [],
+              "onStateChange": {},
+              "permissive": false
+            }
+          ],
+          "forkTasks": [],
+          "startDelay": 0,
+          "joinOn": [],
+          "optional": false,
+          "defaultExclusiveJoinTask": [],
+          "asyncComplete": false,
+          "loopOver": [],
+          "evaluatorType": "value-param",
+          "expression": "switchCaseValue",
+          "onStateChange": {},
+          "permissive": false
+        }
+      ],
+      "evaluatorType": "graaljs",
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "do_while_1",
+      "taskReferenceName": "do_while_ref_1",
+      "inputParameters": {
+        "number": 4
+      },
+      "type": "DO_WHILE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopCondition": "(function () {\n  if ($.do_while_ref_1['iteration'] < $.number) {\n    return true;\n  }\n  return false;\n})();",
+      "loopOver": [
+        {
+          "name": "generate_partial_recipes",
+          "taskReferenceName": "partial_recipe_gen",
+          "inputParameters": {
+            "inventory": "${kitchen_list.output.kitchenItems}",
+            "groceryList": "${grocery_list.output.groceryItems}",
+            "previousRecipes": "${workflow.variables.generated_recipe_names}"
+          },
+          "type": "SIMPLE",
+          "decisionCases": {},
+          "defaultCase": [],
+          "forkTasks": [],
+          "startDelay": 0,
+          "joinOn": [],
+          "optional": false,
+          "defaultExclusiveJoinTask": [],
+          "asyncComplete": false,
+          "loopOver": [],
+          "onStateChange": {},
+          "permissive": false
+        },
+        {
+          "name": "fork",
+          "taskReferenceName": "fork_ref",
+          "inputParameters": {},
+          "type": "FORK_JOIN",
+          "decisionCases": {},
+          "defaultCase": [],
+          "forkTasks": [
+            [],
+            [
+              {
+                "name": "upload_recipe_direct",
+                "taskReferenceName": "upload_recipe_direct_ref",
+                "inputParameters": {
+                  "recipe": "${partial_recipe_gen.output.recipe}"
+                },
+                "type": "SIMPLE",
+                "decisionCases": {},
+                "defaultCase": [],
+                "forkTasks": [],
+                "startDelay": 0,
+                "joinOn": [],
+                "optional": false,
+                "defaultExclusiveJoinTask": [],
+                "asyncComplete": false,
+                "loopOver": [],
+                "onStateChange": {},
+                "permissive": false
+              },
+              {
+                "name": "upload_groceries_from_partial_recipe",
+                "taskReferenceName": "upload_groceries_from_partial_recipe_ref_1",
+                "inputParameters": {
+                  "recipe": "${partial_recipe_gen.output.recipe}"
+                },
+                "type": "SIMPLE",
+                "decisionCases": {},
+                "defaultCase": [],
+                "forkTasks": [],
+                "startDelay": 0,
+                "joinOn": [],
+                "optional": false,
+                "defaultExclusiveJoinTask": [],
+                "asyncComplete": false,
+                "loopOver": [],
+                "onStateChange": {},
+                "permissive": false
+              }
+            ],
+            [
+              {
+                "name": "set_variable_3",
+                "taskReferenceName": "set_variable_ref_3",
+                "inputParameters": {
+                  "generated_recipe_names": "${partial_recipe_gen.output.running_recipes}"
+                },
+                "type": "SET_VARIABLE",
+                "decisionCases": {},
+                "defaultCase": [],
+                "forkTasks": [],
+                "startDelay": 0,
+                "joinOn": [],
+                "optional": false,
+                "defaultExclusiveJoinTask": [],
+                "asyncComplete": false,
+                "loopOver": [],
+                "onStateChange": {},
+                "permissive": false
+              }
+            ]
+          ],
+          "startDelay": 0,
+          "joinOn": [],
+          "optional": false,
+          "defaultExclusiveJoinTask": [],
+          "asyncComplete": false,
+          "loopOver": [],
+          "onStateChange": {},
+          "permissive": false
+        },
+        {
+          "name": "join",
+          "taskReferenceName": "join_ref",
+          "inputParameters": {},
+          "type": "JOIN",
+          "decisionCases": {},
+          "defaultCase": [],
+          "forkTasks": [],
+          "startDelay": 0,
+          "joinOn": [],
+          "optional": false,
+          "defaultExclusiveJoinTask": [],
+          "asyncComplete": false,
+          "loopOver": [],
+          "onStateChange": {},
+          "permissive": false
+        }
+      ],
+      "evaluatorType": "graaljs",
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "get_grocery_items",
+      "taskReferenceName": "updated_grocery_list",
+      "inputParameters": {},
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "generate_grocery_suggestions",
+      "taskReferenceName": "generate_grocery_suggestions_ref",
+      "inputParameters": {
+        "inventory": "${kitchen_list.output.kitchenItems}",
+        "groceries": "${updated_grocery_list.output.groceryItems}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    },
+    {
+      "name": "upload_groceries_direct",
+      "taskReferenceName": "upload_groceries_direct_ref",
+      "inputParameters": {
+        "groceries": "${generate_grocery_suggestions_ref.output.grocerySuggestions}"
+      },
+      "type": "SIMPLE",
+      "decisionCases": {},
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "onStateChange": {},
+      "permissive": false
+    }
+  ],
+  "inputParameters": [],
+  "outputParameters": {},
+  "failureWorkflow": "",
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {},
+  "enforceSchema": true
+}

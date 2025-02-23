@@ -1,0 +1,30 @@
+{
+  "createTime": 1740238077344,
+  "updateTime": 1740259773270,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "generate_complete_recipes",
+  "description": "generates a list of complete recipes based on previously rejected recipes and kitchen item list.",
+  "retryCount": 1,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "inventory",
+    "previousRecipes"
+  ],
+  "outputKeys": [
+    "recipe"
+  ],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 15,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}

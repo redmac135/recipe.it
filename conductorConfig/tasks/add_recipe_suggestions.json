@@ -1,0 +1,27 @@
+{
+  "createTime": 1740300690649,
+  "updateTime": 1740300690649,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "add_recipe_suggestions",
+  "description": "Add recipe suggestions based on partial completed recipe.",
+  "retryCount": 1,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "recipe"
+  ],
+  "outputKeys": [],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 15,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}

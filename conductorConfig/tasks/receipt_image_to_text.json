@@ -1,0 +1,29 @@
+{
+  "createTime": 1740190484966,
+  "updateTime": 1740192765067,
+  "createdBy": "ethanzhao1981@gmail.com",
+  "updatedBy": "ethanzhao1981@gmail.com",
+  "name": "receipt_image_to_text",
+  "description": "uses python OCR to get all the test from a receipt and returns it as a string.",
+  "retryCount": 1,
+  "timeoutSeconds": 3600,
+  "inputKeys": [
+    "image_base64"
+  ],
+  "outputKeys": [
+    "extracted_text"
+  ],
+  "timeoutPolicy": "TIME_OUT_WF",
+  "retryLogic": "FIXED",
+  "retryDelaySeconds": 15,
+  "responseTimeoutSeconds": 600,
+  "concurrentExecLimit": 0,
+  "inputTemplate": {},
+  "rateLimitPerFrequency": 0,
+  "rateLimitFrequencyInSeconds": 1,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "pollTimeoutSeconds": 3600,
+  "backoffScaleFactor": 1,
+  "totalTimeoutSeconds": 0,
+  "enforceSchema": false
+}

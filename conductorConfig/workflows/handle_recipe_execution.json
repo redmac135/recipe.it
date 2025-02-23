@@ -1,0 +1,84 @@
+{
+  "createTime": 1740294572308,
+  "updateTime": 1740300818656,
+  "name": "handle_recipe_execution",
+  "description": "Handle the two possibilities when an invite hits a cross roads",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "switch",
+      "taskReferenceName": "switch_ref",
+      "inputParameters": {
+        "switchCaseValue": "${workflow.input.recipe.is_complete}"
+      },
+      "type": "SWITCH",
+      "decisionCases": {
+        "true": [
+          {
+            "name": "execute_recipe",
+            "taskReferenceName": "execute_recipe_ref",
+            "inputParameters": {},
+            "type": "SIMPLE",
+            "decisionCases": {},
+            "defaultCase": [],
+            "forkTasks": [],
+            "startDelay": 0,
+            "joinOn": [],
+            "optional": false,
+            "defaultExclusiveJoinTask": [],
+            "asyncComplete": false,
+            "loopOver": [],
+            "onStateChange": {},
+            "permissive": false
+          }
+        ],
+        "false": [
+          {
+            "name": "add_recipe_suggestions",
+            "taskReferenceName": "add_recipe_suggestions_ref",
+            "inputParameters": {},
+            "type": "SIMPLE",
+            "decisionCases": {},
+            "defaultCase": [],
+            "forkTasks": [],
+            "startDelay": 0,
+            "joinOn": [],
+            "optional": false,
+            "defaultExclusiveJoinTask": [],
+            "asyncComplete": false,
+            "loopOver": [],
+            "onStateChange": {},
+            "permissive": false
+          }
+        ]
+      },
+      "defaultCase": [],
+      "forkTasks": [],
+      "startDelay": 0,
+      "joinOn": [],
+      "optional": false,
+      "defaultExclusiveJoinTask": [],
+      "asyncComplete": false,
+      "loopOver": [],
+      "evaluatorType": "value-param",
+      "expression": "switchCaseValue",
+      "onStateChange": {},
+      "permissive": false
+    }
+  ],
+  "inputParameters": [
+    "recipe",
+    "servings"
+  ],
+  "outputParameters": {},
+  "failureWorkflow": "",
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "ownerEmail": "ethanzhao1981@gmail.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {},
+  "enforceSchema": true
+}
