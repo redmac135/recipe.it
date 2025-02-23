@@ -9,6 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { ButtonProps, set } from "@/state/inventory/inventorySlice";
 import SortButton from "@/components/Inventory/SortButton";
 
+/** 
+  Inventory Screen For The App
+*/
 export default function Inventory() {
   const dispatch = useDispatch();
 
