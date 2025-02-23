@@ -15,11 +15,25 @@ import data from "../../constants/item_data";
 import { Button } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { RootState } from "@/state/store";
+import { Dialog } from "react-native-simple-dialogs";
+import CustomButton from "@/components/ShoppingCart/ActionButton";
+import { useFonts } from "expo-font";
 
 const Food = () => {
   const dimensions = useWindowDimensions();
   const [items, setItems] = useState<foodRecipes[]>(data.recipeItems);
   const [count, setCount] = useState(1);
+  const [firstDialog, setFirstDialog] = useState(false);
+  const [secondDialog, setSecondDialog] = useState(false);
+  const [thirdDialog, setThirdDialog] = useState(false);
+
+  const [newList, setNewList] = useState<
+    { name: string; quantity: number; unit: string }[]
+  >([]);
+
+  let [fontsLoaded] = useFonts({
+    MerchantCopy: require("../../assets/fonts/merchant-copy.ttf"),
+  });
 
   const recipeList = useSelector(
     (state: RootState) => state.recipeList
@@ -46,132 +60,411 @@ const Food = () => {
       >
         <DeckSwiper
           data={items}
-          renderCard={(item) => (
-            <View
-              style={{
-                backgroundColor: firstColour,
-                height: "100%",
-                padding: 20,
-                borderRadius: 10,
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: "left",
-                  color: secondColour,
-                  fontSize: 18,
-                  marginBottom: 10,
-                }}
-              >
-                Are We Feeling Some...
-              </Text>
-              <Text
-                style={{
-                  textAlign: "left",
-                  color: secondColour,
-                  fontSize: 40,
-                  marginBottom: 15,
-                }}
-              >
-                {item.name}
-              </Text>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: secondColour,
-                  fontSize: 30,
-                }}
-              >
-                You Have Everything You Need! {":)"}
-              </Text>
-              <Text
-                style={{
-                  textAlign: "center",
-                  color: secondColour,
-                  fontSize: 18,
-                  marginTop: 5,
-                }}
-              >
-                Max Serving: {item.max_servings}
-              </Text>
-              <View
-                style={{
-                  marginTop: 10,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  flexDirection: "row",
-                }}
-              >
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    const newCount = count - 1;
-                    if (newCount >= 1) {
-                      setCount(newCount);
-                    }
+          renderCard={(item) =>
+            item.is_complete ? (
+              <>
+                <Dialog
+                  visible={firstDialog}
+                  title="Ingredients Per Serving"
+                  titleStyle={{
+                    fontFamily: "MerchantCopy",
+                    fontSize: 36,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    marginHorizontal: 5,
+                  }}
+                  onTouchOutside={() => {
+                    setFirstDialog(false);
+                  }}
+                  onRequestClose={() => {}}
+                  contentInsetAdjustmentBehavior={undefined}
+                  animationType="fade"
+                  dialogStyle={{ borderRadius: 20 }}
+                >
+                  <View>
+                    {item.ingredients_have_per_serving.map(
+                      (ingredient, index) => (
+                        <View
+                          key={index}
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          <Text
+                            key={index}
+                            style={{
+                              color: secondColour,
+                              fontSize: 18,
+                              marginBottom: 5,
+                            }}
+                          >
+                            {ingredient.name}: {ingredient.quantity}{" "}
+                            {ingredient.unit}
+                          </Text>
+                        </View>
+                      )
+                    )}
+                  </View>
+                </Dialog>
+                <Dialog
+                  visible={thirdDialog}
+                  title="Cooking Steps"
+                  titleStyle={{
+                    fontFamily: "MerchantCopy",
+                    fontSize: 36,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    marginHorizontal: 5,
+                  }}
+                  onTouchOutside={() => {
+                    setThirdDialog(false);
+                  }}
+                  onRequestClose={() => {}}
+                  contentInsetAdjustmentBehavior={undefined}
+                  animationType="fade"
+                  dialogStyle={{ borderRadius: 20 }}
+                >
+                  <View>
+                    {item.steps!.map((ingredient, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text
+                          key={index}
+                          style={{
+                            color: secondColour,
+                            fontSize: 18,
+                            marginBottom: 5,
+                          }}
+                        >
+                          {index + 1}. {ingredient}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </Dialog>
+                <View
+                  style={{
+                    backgroundColor: firstColour,
+                    height: "100%",
+                    padding: 20,
+                    borderRadius: 10,
+                    zIndex: 7,
                   }}
                 >
                   <Text
-                    style={styles.buttonText}
-                    onPress={() => {
-                      const newCount = count - 1;
-                      if (newCount >= 1) {
-                        setCount(newCount);
-                      }
+                    style={{
+                      textAlign: "left",
+                      color: secondColour,
+                      fontSize: 18,
+                      marginBottom: 10,
                     }}
                   >
-                    -
+                    Are We Feeling Some...
                   </Text>
-                </TouchableOpacity>
-                <Text style={styles.countText}>{count}</Text>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {
-                    console.log("Pressed");
-                    const newCount = count + 1;
-                    if (newCount <= item.max_servings) {
-                      setCount(newCount);
-                    }
+                  <Text
+                    style={{
+                      textAlign: "left",
+                      color: secondColour,
+                      fontSize: 40,
+                      marginBottom: 15,
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: secondColour,
+                      fontSize: 30,
+                    }}
+                  >
+                    You Have Everything You Need! {":)"}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: secondColour,
+                      fontSize: 18,
+                      marginTop: 5,
+                    }}
+                  >
+                    Max Serving: {item.max_servings}
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 10,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        const newCount = count - 1;
+                        if (newCount >= 1) {
+                          setCount(newCount);
+                        }
+                      }}
+                    >
+                      <Text
+                        style={styles.buttonText}
+                        onPress={() => {
+                          const newCount = count - 1;
+                          if (newCount >= 1) {
+                            setCount(newCount);
+                          }
+                        }}
+                      >
+                        -
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.countText}>{count}</Text>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        console.log("Pressed");
+                        const newCount = count + 1;
+                        if (newCount <= item.max_servings) {
+                          setCount(newCount);
+                        }
+                      }}
+                    >
+                      <Text
+                        style={styles.buttonText}
+                        onPress={() => {
+                          console.log("Pressed");
+                          const newCount = count + 1;
+                          if (newCount <= item.max_servings) {
+                            setCount(newCount);
+                          }
+                        }}
+                      >
+                        +
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Button
+                    style={{
+                      backgroundColor: thirdColour,
+                      marginTop: 20,
+                      borderRadius: 20,
+                    }}
+                    onPress={() => setFirstDialog(true)}
+                    textColor={"white"}
+                  >
+                    Ingredients Per Serving
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: thirdColour,
+                      marginTop: 20,
+                      borderRadius: 20,
+                    }}
+                    onPress={() => setThirdDialog(true)}
+                    textColor={"white"}
+                  >
+                    Cooking Steps
+                  </Button>
+                </View>
+              </>
+            ) : (
+              <>
+                <Dialog
+                  visible={secondDialog}
+                  title="Ingredients Per Serving"
+                  titleStyle={{
+                    fontFamily: "MerchantCopy",
+                    fontSize: 36,
+                    fontWeight: "500",
+                    textAlign: "center",
+                    marginHorizontal: 5,
+                  }}
+                  onTouchOutside={() => {
+                    setSecondDialog(false);
+                  }}
+                  onRequestClose={() => {}}
+                  contentInsetAdjustmentBehavior={undefined}
+                  animationType="fade"
+                  dialogStyle={{ borderRadius: 20 }}
+                >
+                  <View>
+                    {newList.map((ingredient, index) => (
+                      <View
+                        key={index}
+                        style={{
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Text
+                          key={index}
+                          style={{
+                            color: secondColour,
+                            fontSize: 18,
+                            marginBottom: 5,
+                          }}
+                        >
+                          {ingredient.name}: {ingredient.quantity}{" "}
+                          {ingredient.unit}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                </Dialog>
+                <View
+                  style={{
+                    backgroundColor: firstColour,
+                    height: "100%",
+                    padding: 20,
+                    borderRadius: 10,
+                    zIndex: 7,
                   }}
                 >
                   <Text
-                    style={styles.buttonText}
-                    onPress={() => {
-                      console.log("Pressed");
-                      const newCount = count + 1;
-                      if (newCount <= item.max_servings) {
-                        setCount(newCount);
-                      }
+                    style={{
+                      textAlign: "left",
+                      color: secondColour,
+                      fontSize: 18,
+                      marginBottom: 10,
                     }}
                   >
-                    +
+                    Are We Feeling Some...
                   </Text>
-                </TouchableOpacity>
-              </View>
-              <Button
-                style={{
-                  backgroundColor: thirdColour,
-                  marginTop: 20,
-                  borderRadius: 20,
-                }}
-                onPress={() => console.log("Pressed")}
-                textColor={"white"}
-              >
-                Ingredients Per Serving
-              </Button>
-              <Button
-                style={{
-                  backgroundColor: thirdColour,
-                  marginTop: 20,
-                  borderRadius: 20,
-                }}
-                onPress={() => console.log("Pressed")}
-                textColor={"white"}
-              >
-                Cooking Steps
-              </Button>
-            </View>
-          )}
+                  <Text
+                    style={{
+                      textAlign: "left",
+                      color: secondColour,
+                      fontSize: 40,
+                      marginBottom: 15,
+                    }}
+                  >
+                    {item.name}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: secondColour,
+                      fontSize: 30,
+                    }}
+                  >
+                    You Need More Ingredients {":("}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: secondColour,
+                      fontSize: 18,
+                      marginTop: 5,
+                    }}
+                  >
+                    Max Serving: {item.max_servings}
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 10,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "row",
+                    }}
+                  >
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        const newCount = count - 1;
+                        if (newCount >= 1) {
+                          setCount(newCount);
+                        }
+                      }}
+                    >
+                      <Text
+                        style={styles.buttonText}
+                        onPress={() => {
+                          const newCount = count - 1;
+                          if (newCount >= 1) {
+                            setCount(newCount);
+                          }
+                        }}
+                      >
+                        -
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.countText}>{count}</Text>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={() => {
+                        console.log("Pressed");
+                        const newCount = count + 1;
+                        if (newCount <= item.max_servings) {
+                          setCount(newCount);
+                        }
+                      }}
+                    >
+                      <Text
+                        style={styles.buttonText}
+                        onPress={() => {
+                          const newCount = count + 1;
+                          if (newCount <= item.max_servings) {
+                            setCount(newCount);
+                          }
+                        }}
+                      >
+                        +
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <Button
+                    style={{
+                      backgroundColor: thirdColour,
+                      marginTop: 20,
+                      borderRadius: 20,
+                    }}
+                    onPress={() => {
+                      setNewList(item.ingredients_have_per_serving);
+                      setSecondDialog(true);
+                    }}
+                    textColor={"white"}
+                  >
+                    Ingredients Per Serving
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: thirdColour,
+                      marginTop: 20,
+                      borderRadius: 20,
+                    }}
+                    onPress={() => {
+                      setNewList(item.existing_groceries_per_serving || []);
+                      setSecondDialog(true);
+                    }}
+                    textColor={"white"}
+                  >
+                    Existing Groceries Per Serving
+                  </Button>
+                  <Button
+                    style={{
+                      backgroundColor: thirdColour,
+                      marginTop: 20,
+                      borderRadius: 20,
+                    }}
+                    onPress={() => {
+                      setNewList(item.new_groceries_per_serving || []);
+                      setSecondDialog(true);
+                    }}
+                    textColor={"white"}
+                  >
+                    New Groceries Per Serving
+                  </Button>
+                </View>
+              </>
+            )
+          }
           onSwipeLeft={(item) => console.log("Swiped left:", item)}
           onSwipeRight={(item) => console.log("Swiped right:", item)}
         />
