@@ -278,7 +278,7 @@ const Food = () => {
               <>
                 <Dialog
                   visible={secondDialog}
-                  title="Ingredients Per Serving"
+                  title="Per Serving"
                   titleStyle={{
                     fontFamily: "MerchantCopy",
                     fontSize: 36,
@@ -365,6 +365,16 @@ const Food = () => {
                     }}
                   >
                     Max Serving: {item.max_servings}
+                  </Text>
+                  <Text
+                    style={{
+                      textAlign: "center",
+                      color: secondColour,
+                      fontSize: 18,
+                      marginTop: 5,
+                    }}
+                  >
+                    Estimated Cost: {item.estimated_cost}
                   </Text>
                   <View
                     style={{
