@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import { Text, StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
 import * as Animatable from "react-native-animatable";
 
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import Section from "@/components/Inventory/Section";
-import { getInventoryList, editInventoryItem } from "@/state/inventory/inventorySlice";
+import {
+  getInventoryList,
+  editInventoryItem,
+} from "@/state/inventory/inventorySlice";
 import SortButton from "@/components/Inventory/SortButton";
 import { KitchenItem, KitchenItemCategoryEnum } from "@/types/models";
 import KitchenItemEditModal from "@/components/Inventory/KitchenItemEditModal";
@@ -22,7 +19,11 @@ import { useDispatch } from "react-redux";
 export default function Inventory() {
   const dispatch = useDispatch<AppDispatch>();
   const [selected, setSelected] = useState("Alphabetical");
-  const categories = [KitchenItemCategoryEnum.PANTRY, KitchenItemCategoryEnum.FREEZER, KitchenItemCategoryEnum.FRIDGE];
+  const categories = [
+    KitchenItemCategoryEnum.PANTRY,
+    KitchenItemCategoryEnum.FREEZER,
+    KitchenItemCategoryEnum.FRIDGE,
+  ];
 
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
@@ -34,24 +35,31 @@ export default function Inventory() {
     console.log(item);
     setCurrentItem(item);
     setModalVisible(true);
-  }
+  };
 
   const handleCloseModal = () => {
     setModalVisible(false);
-  }
+  };
 
   const handleSave = (item: KitchenItem) => {
     dispatch(editInventoryItem(item));
     setModalVisible(false);
-  }
+  };
 
   useEffect(() => {
     dispatch(getInventoryList());
   }, [dispatch]);
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
-      <KitchenItemEditModal visible={isModalVisible} onClose={handleCloseModal} kitchenItem={currentItem} onSave={handleSave} />
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
+      <KitchenItemEditModal
+        visible={isModalVisible}
+        onClose={handleCloseModal}
+        kitchenItem={currentItem}
+        onSave={handleSave}
+      />
       <Header name="Inventory" back={false} />
 
       {/* Sort bar */}
@@ -70,7 +78,10 @@ export default function Inventory() {
       </View>
 
       {/* Scroll area for inventory sections */}
-      <ScrollView style={styles.scrollArea} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollArea}
+        showsVerticalScrollIndicator={false}
+      >
         {categories.map((category, index) => (
           <Animatable.View
             key={index}
@@ -78,11 +89,16 @@ export default function Inventory() {
             duration={500}
             delay={index * 200}
           >
-            <Section name={category} alphabetical={selected === "Alphabetical"} handleEdit={handleEdit} />
+            <Section
+              name={category}
+              alphabetical={selected === "Alphabetical"}
+              handleEdit={handleEdit}
+            />
           </Animatable.View>
         ))}
+        <View style={{ height: 70 }} />
       </ScrollView>
-    </SafeAreaView >
+    </SafeAreaView>
   );
 }
 

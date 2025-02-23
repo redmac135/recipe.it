@@ -1,6 +1,13 @@
 // index.tsx
 import React, { useCallback, useEffect, useState } from "react";
-import { Text, StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import { Dialog } from "react-native-simple-dialogs";
 import { TextInput } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
@@ -15,11 +22,18 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import SidePanel from "@/components/ShoppingCart/SidePanel";
 import { AppDispatch, RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroceryList, acceptGrocerySuggestion, addGroceryItem, deleteGroceryItem } from "@/state/groceryList/grocerySlice";
+import {
+  getGroceryList,
+  acceptGrocerySuggestion,
+  addGroceryItem,
+  deleteGroceryItem,
+} from "@/state/groceryList/grocerySlice";
 import { GroceryItem } from "@/types/models";
 import { useFocusEffect } from "expo-router";
 
 export default function HomeScreen() {
+  const dimensions = useWindowDimensions();
+
   const dispatch = useDispatch<AppDispatch>();
   const groceryList = useSelector(
     (state: RootState) => state.groceryList.groceryList
@@ -39,7 +53,7 @@ export default function HomeScreen() {
     useCallback(() => {
       dispatch(getGroceryList());
     }, [dispatch])
-  )
+  );
 
   useEffect(() => {
     console.log(groceryList);
@@ -107,7 +121,7 @@ export default function HomeScreen() {
           setQuantity(0);
           setUnitText("");
         }}
-        onRequestClose={() => { }}
+        onRequestClose={() => {}}
         contentInsetAdjustmentBehavior={undefined}
         animationType="fade"
         dialogStyle={{ borderRadius: 20 }}
@@ -125,21 +139,21 @@ export default function HomeScreen() {
               textColor="black"
               style={{
                 backgroundColor: theme.white,
-                width: "90%",
+                width: dimensions.width * 0.65,
               }}
             />
             <TextInput
               mode="flat"
               placeholder="Quantity"
               placeholderTextColor={theme.gray}
-              value={quantity.toString()}
               onChangeText={(text: string) => setQuantity(parseInt(text))}
               activeOutlineColor={theme.accentRed}
               outlineColor={theme.gray}
               textColor="black"
               style={{
                 backgroundColor: theme.white,
-                width: "90%",
+                width: dimensions.width * 0.65,
+                marginVertical: 10,
               }}
             />
             <TextInput
@@ -153,7 +167,7 @@ export default function HomeScreen() {
               textColor="black"
               style={{
                 backgroundColor: theme.white,
-                width: "90%",
+                width: dimensions.width * 0.65,
               }}
             />
           </View>
@@ -177,7 +191,7 @@ export default function HomeScreen() {
                   quantity: quantity,
                   unit: unitText,
                   is_approved: true,
-                }
+                };
                 dispatch(addGroceryItem(newItem));
                 setDialog(false);
               }
@@ -253,7 +267,7 @@ export default function HomeScreen() {
       </View>
 
       {/* Conditionally render side panel if visible */}
-      {(sidePanelVisible && currentItem) && (
+      {sidePanelVisible && currentItem && (
         <SidePanel
           item={currentItem}
           onClose={() => setSidePanelVisible(false)}
@@ -274,6 +288,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     paddingVertical: 10,
+    marginBottom: 60,
   },
   dialog: {
     fontSize: 24,
