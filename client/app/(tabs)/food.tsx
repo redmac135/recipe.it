@@ -91,8 +91,21 @@ const Food = () => {
                   onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
-                  dialogStyle={{ borderRadius: 20 }}
+                  dialogStyle={{ borderRadius: 20, overflowY: "scroll" }}
                 >
+                  <TouchableOpacity onPress={() => setFirstDialog(false)}>
+                    <Text
+                      style={{
+                        color: secondColour,
+                        fontSize: 18,
+                        position: "absolute",
+                        right: 0,
+                        top: -50,
+                      }}
+                    >
+                      X
+                    </Text>
+                  </TouchableOpacity>
                   <View>
                     {item.ingredients_have_per_serving.map(
                       (ingredient, index) => (
@@ -135,8 +148,21 @@ const Food = () => {
                   onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
-                  dialogStyle={{ borderRadius: 20 }}
+                  dialogStyle={{ borderRadius: 20, overflowY: "scroll" }}
                 >
+                  <TouchableOpacity onPress={() => setThirdDialog(false)}>
+                    <Text
+                      style={{
+                        color: secondColour,
+                        fontSize: 18,
+                        position: "absolute",
+                        right: 0,
+                        top: -50,
+                      }}
+                    >
+                      X
+                    </Text>
+                  </TouchableOpacity>
                   <View>
                     {item.steps!.map((ingredient, index) => (
                       <View
@@ -305,8 +331,21 @@ const Food = () => {
                   onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
-                  dialogStyle={{ borderRadius: 20 }}
+                  dialogStyle={{ borderRadius: 20, overflowY: "scroll" }}
                 >
+                  <TouchableOpacity onPress={() => setSecondDialog(false)}>
+                    <Text
+                      style={{
+                        color: secondColour,
+                        fontSize: 18,
+                        position: "absolute",
+                        right: 0,
+                        top: -50,
+                      }}
+                    >
+                      X
+                    </Text>
+                  </TouchableOpacity>
                   <View>
                     {newList.map((ingredient, index) => (
                       <View
