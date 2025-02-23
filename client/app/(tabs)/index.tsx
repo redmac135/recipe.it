@@ -151,19 +151,19 @@ export default function HomeScreen() {
         style={styles.scrollArea}
         showsVerticalScrollIndicator={false}
       >
-        {cartItems.map((item, index) => (
+        {groceryList.map((item, index) => (
           <Animatable.View
-            key={item}
+            key={index}
             animation="fadeInUp"
             duration={500}
             delay={index * 100}
           >
             <ItemButton
-              name={item}
-              selected={selectedItems.includes(item)}
+              name={item.name}
+              selected={selectedItems.includes(item.name)}
               ai={false}
               // Press calls side panel
-              onPress={() => handleItemPress(item)}
+              onPress={() => handleItemPress(item.name)}
             />
           </Animatable.View>
         ))}
