@@ -27,7 +27,7 @@ export default function SidePanel({ item, onClose }: SidePanelProps) {
                         ? "AI recommends this item."
                         : item.ai_reason === "COMPLETE_RECIPE"
                             ? "This completes a recipe."
-                            : ""}
+                            : ""} // head title quantity and units, AI
             </Text>
 
             <Text style={styles.itemSubtitle}>
