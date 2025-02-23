@@ -18,9 +18,20 @@ export const getRecipeList = createAsyncThunk(
   "recipe/getRecipeList",
   async () => {
     const response = await fetchAPI("recipes/list", "GET");
-    const recipeList: Recipe[] = response.recipeList;
+    const recipeList: Recipe[] = response.recipes;
 
     return recipeList;
+  },
+);
+
+// Async thunk to execute a recipe
+export const executeRecipe = createAsyncThunk(
+  "recipe/executeRecipe",
+  async ({ recipe, servings }: { recipe: Recipe; servings: number }) => {
+    const data = JSON.stringify({ recipe, servings });
+    const response = await fetchAPI("recipes/execute", "POST", data);
+
+    return response;
   },
 );
 
@@ -36,6 +47,7 @@ const recipeSlice = createSlice({
     builder.addCase(getRecipeList.fulfilled, (state, action) => {
       state.status = FetchStatus.SUCCEEDED;
       state.recipeList = action.payload;
+      console.log(state.recipeList);
     });
     builder.addCase(getRecipeList.rejected, (state) => {
       state.status = FetchStatus.FAILED;
