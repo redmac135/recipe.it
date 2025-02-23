@@ -18,6 +18,13 @@ async def list_groceryitems():
     return {"groceryItems": grocery_items}
 
 
+@router.post("/add")
+async def add_groceryitem(item: dict):
+    db.collection("GroceryItems").add(item)
+
+    return Response(status_code=status.HTTP_201_CREATED)
+
+
 @router.get("/accept/{id}")
 async def accept_groceryitem(id: str):
     doc = db.collection("GroceryItems").document(id)

@@ -34,6 +34,16 @@ export const acceptGrocerySuggestion = createAsyncThunk(
   },
 );
 
+// Async thunk to add a grocery item
+export const addGroceryItem = createAsyncThunk(
+  "grocery/addGroceryItem",
+  async (item: GroceryItem) => {
+    await fetchAPI("groceryitems/add", "POST", JSON.stringify(item));
+
+    return item;
+  },
+);
+
 // Async thunk to delete a grocery item
 export const deleteGroceryItem = createAsyncThunk(
   "grocery/deleteGroceryItem",
@@ -74,6 +84,11 @@ const grocerySlice = createSlice({
       })
       .addCase(getGroceryList.rejected, (state) => {
         state.status = FetchStatus.FAILED;
+      })
+
+      .addCase(addGroceryItem.pending, (state, action) => {
+        // optimistic update
+        state.groceryList.push(action.meta.arg);
       })
 
       .addCase(acceptGrocerySuggestion.pending, (state, action) => {
