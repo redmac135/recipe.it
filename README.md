@@ -16,6 +16,7 @@ Recipeit leverages cutting-edge technologies to transform your grocery managemen
 3. **Data Processing**: The extracted text is sent to Gemini, which converts it into structured JSON data.
 4. **Store in Firestore**: The parsed data is saved in a Firestore database.
 5. **Fetch via FastAPI**: Retrieve your data and view suggested recipes using our FastAPI backend.
+6. **Workflows created with Orkes**: Most workflows (with the exception of get and set requests) were created and integrated using Orkes
 
 ## How to Use ⚙️
 Follow these steps to get started with Recipeit:
