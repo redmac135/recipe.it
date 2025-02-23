@@ -12,7 +12,8 @@ https://firebase.google.com/docs/firestore/quickstart
 3. Install the virtual environment
 
    ```bash
-   python3 -m venv .venv
+   python3 -m venv .venv #for mac and linux
+   python -m venv .venv #for windows
    ```
 
 3. Activate the virtual environment
