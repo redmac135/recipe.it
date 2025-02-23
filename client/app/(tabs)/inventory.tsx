@@ -11,16 +11,15 @@ import * as Animatable from "react-native-animatable";
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import Section from "@/components/Inventory/Section";
-import { AppDispatch, RootState } from "@/state/store";
-import { useDispatch, useSelector } from "react-redux";
 import { getInventoryList, editInventoryItem } from "@/state/inventory/inventorySlice";
 import SortButton from "@/components/Inventory/SortButton";
 import { KitchenItem, KitchenItemCategoryEnum } from "@/types/models";
 import KitchenItemEditModal from "@/components/Inventory/KitchenItemEditModal";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { AppDispatch } from "@/state/store";
+import { useDispatch } from "react-redux";
 
 export default function Inventory() {
-
   const dispatch = useDispatch<AppDispatch>();
   const [selected, setSelected] = useState("Alphabetical");
   const categories = [KitchenItemCategoryEnum.PANTRY, KitchenItemCategoryEnum.FREEZER, KitchenItemCategoryEnum.FRIDGE];
