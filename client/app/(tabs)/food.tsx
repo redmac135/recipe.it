@@ -14,17 +14,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/state/store";
 import { Dialog } from "react-native-simple-dialogs";
 import { Recipe } from "@/types/models";
-import { getRecipeList } from "@/state/recipes/recipeSlice";
 import { router, useFocusEffect } from "expo-router";
+import { executeRecipe, getRecipeList } from "@/state/recipes/recipeSlice";
 
 const Food = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [items, setItems] = useState<Recipe[]>([]);
-  const [count, setCount] = useState(0);
+  const [currIdx, setCurrIdx] = useState<number>(4);
+  const [count, setCount] = useState(1);
   const [firstDialog, setFirstDialog] = useState(false);
   const [secondDialog, setSecondDialog] = useState(false);
   const [thirdDialog, setThirdDialog] = useState(false);
+  const [recipeMode, setRecipeMode] = useState(false);
+  const [stepItems, setStepItems] = useState<Recipe[]>([]);
 
   const [newList, setNewList] = useState<
     { name: string; quantity: number; unit: string }[]
@@ -33,6 +36,11 @@ const Food = () => {
   const recipeList = useSelector(
     (state: RootState) => state.recipeList.recipeList
   );
+
+  const fuckingfunc = useCallback(() => {
+    setCurrIdx((currIdx) => currIdx + 1);
+    console.log(currIdx);
+  }, [setCurrIdx]);
 
   useFocusEffect(
     useCallback(() => {
@@ -46,7 +54,6 @@ const Food = () => {
 
   useEffect(() => {
     setItems(recipeList);
-    setCount(recipeList.length);
   }, [recipeList]);
 
   const firstColour = "#f04a5e";
@@ -69,9 +76,9 @@ const Food = () => {
         }}
       >
         <DeckSwiper
-          key={items.length}
+          key={recipeMode ? stepItems.length * 100 : items.length}
           allowedDirections={["left", "right"]}
-          data={items}
+          data={recipeMode ? stepItems : items}
           renderCard={(item: Recipe) =>
             item.is_complete ? (
               <>
@@ -88,7 +95,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setFirstDialog(false);
                   }}
-                  onRequestClose={() => {}}
+                  onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20, overflowY: "scroll" }}
@@ -145,7 +152,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setThirdDialog(false);
                   }}
-                  onRequestClose={() => {}}
+                  onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20, overflowY: "scroll" }}
@@ -328,7 +335,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setSecondDialog(false);
                   }}
-                  onRequestClose={() => {}}
+                  onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20, overflowY: "scroll" }}
@@ -514,24 +521,6 @@ const Food = () => {
               </>
             )
           }
-          onSwipeLeft={(item) => console.log("Swiped left:", item)}
-          onSwipeRight={(item) => {
-            console.log("Swiped right:", item);
-
-            item.is_complete
-              ? setItems(
-                  item.steps?.map((step, index) => {
-                    return {
-                      name: `Step ${index + 1}`,
-                      id: step,
-                      is_complete: true,
-                      ingredients_have_per_serving: [],
-                      max_servings: 0,
-                    };
-                  }) || []
-                )
-              : router.replace("/");
-          }}
         />
       </View>
     </SafeAreaView>
