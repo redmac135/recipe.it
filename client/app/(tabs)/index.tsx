@@ -1,5 +1,5 @@
 // index.tsx
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Text, StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
 import { Dialog } from "react-native-simple-dialogs";
 import { TextInput } from "react-native-paper";
@@ -7,7 +7,6 @@ import * as Animatable from "react-native-animatable";
 
 import Header from "@/components/Header";
 import Colors from "@/constants/Colors";
-import data from "@/constants/item_data";
 import ItemButton from "@/components/ShoppingCart/ItemButton";
 import CustomButton from "@/components/ShoppingCart/ActionButton";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -16,36 +15,47 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 import SidePanel from "@/components/ShoppingCart/SidePanel";
 import { AppDispatch, RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroceryList } from "@/state/groceryList/grocerySlice";
+import { getGroceryList, acceptGrocerySuggestion, addGroceryItem, deleteGroceryItem } from "@/state/groceryList/grocerySlice";
+import { GroceryItem } from "@/types/models";
+import { useFocusEffect } from "expo-router";
 
 export default function HomeScreen() {
   const dispatch = useDispatch<AppDispatch>();
   const groceryList = useSelector(
-    (state: RootState) => state.groceryList
-  ).groceryList;
+    (state: RootState) => state.groceryList.groceryList
+  );
 
   // Existing states
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
-  const [cartItems, setCartItems] = useState<string[]>(data.items);
-  const [aiItems, setAiItems] = useState<string[]>([
-    "Feta Cheese",
-    "Provolone",
-  ]);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [cartItems, setCartItems] = useState<GroceryItem[]>([]);
+  const [aiItems, setAiItems] = useState<GroceryItem[]>([]);
   const [error, setError] = useState(false);
   const [dialog, setDialog] = useState(false);
   const [nameText, setNameText] = useState("");
+  const [quantity, setQuantity] = useState(0);
   const [unitText, setUnitText] = useState("");
 
-  useEffect(() => {
-    const grocery = async () => await dispatch(getGroceryList());
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getGroceryList());
+    }, [dispatch])
+  )
 
-    grocery().then((result) => {
-      console.log(result);
-      // For now, we'll just add all items to cart and AI
-      setCartItems(groceryList.map((item) => item.name));
-      setAiItems([]);
-    });
+  useEffect(() => {
+    console.log(groceryList);
+  }, [groceryList]);
+
+  useEffect(() => {
+    dispatch(getGroceryList());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!groceryList) return;
+    console.log(groceryList);
+    setCartItems(groceryList.filter((item) => item.is_approved));
+    setAiItems(groceryList.filter((item) => !item.is_approved));
+  }, [groceryList]);
+
   // For side panel
   const [sidePanelVisible, setSidePanelVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState<string | null>(null);
@@ -54,34 +64,29 @@ export default function HomeScreen() {
   const theme = Colors[colorScheme ?? "light"];
 
   // Only for toggling item selection
-  function handleToggle(name: string) {
-    if (selectedItems.includes(name)) {
-      setSelectedItems(selectedItems.filter((item) => item !== name));
+  function handleToggle(id: string) {
+    if (selectedIds.includes(id)) {
+      setSelectedIds(selectedIds.filter((item) => item !== id));
     } else {
-      setSelectedItems([...selectedItems, name]);
+      setSelectedIds([...selectedIds, id]);
     }
   }
 
   // Move AI items into cart
-  function handleAI(name: string) {
-    setAiItems(aiItems.filter((item) => item !== name));
-    setCartItems([...cartItems, name]);
+  function handleAI(id: string) {
+    dispatch(acceptGrocerySuggestion(id));
   }
 
   // Show side panel with the item details
-  function handleItemPress(itemName: string) {
-    // You can also incorporate handleToggle or handleAI if needed
-    // e.g. handleToggle(itemName) or handleAI(itemName)
-
-    // For example, let's do selection toggling for normal items, AI logic for AI items:
-    if (aiItems.includes(itemName)) {
-      handleAI(itemName);
+  function handleItemPress(id: string) {
+    if (aiItems.some((item) => item.id === id)) {
+      handleAI(id);
     } else {
-      handleToggle(itemName);
+      handleToggle(id);
     }
 
     // Then open side panel with the item
-    setCurrentItem(itemName);
+    setCurrentItem(id);
     setSidePanelVisible(true);
   }
 
@@ -98,8 +103,10 @@ export default function HomeScreen() {
           setDialog(false);
           setError(false);
           setNameText("");
+          setQuantity(0);
+          setUnitText("");
         }}
-        onRequestClose={() => {}}
+        onRequestClose={() => { }}
         contentInsetAdjustmentBehavior={undefined}
         animationType="fade"
         dialogStyle={{ borderRadius: 20 }}
@@ -120,11 +127,39 @@ export default function HomeScreen() {
                 width: "90%",
               }}
             />
+            <TextInput
+              mode="flat"
+              placeholder="Quantity"
+              placeholderTextColor={theme.gray}
+              value={quantity.toString()}
+              onChangeText={(text: string) => setQuantity(parseInt(text))}
+              activeOutlineColor={theme.accentRed}
+              outlineColor={theme.gray}
+              textColor="black"
+              style={{
+                backgroundColor: theme.white,
+                width: "90%",
+              }}
+            />
+            <TextInput
+              mode="flat"
+              placeholder="Unit"
+              placeholderTextColor={theme.gray}
+              value={unitText}
+              onChangeText={(text: string) => setUnitText(text)}
+              activeOutlineColor={theme.accentRed}
+              outlineColor={theme.gray}
+              textColor="black"
+              style={{
+                backgroundColor: theme.white,
+                width: "90%",
+              }}
+            />
           </View>
           <View style={styles.dialogErrorContainer}>
             {error && (
               <Text style={{ fontSize: 13, color: "red", marginLeft: "10%" }}>
-                Please Enter A Name.
+                Please Enter A Name, Quantity, and Unit.
               </Text>
             )}
           </View>
@@ -136,7 +171,13 @@ export default function HomeScreen() {
               if (nameText.length === 0) {
                 setError(true);
               } else {
-                setCartItems([...cartItems, nameText]);
+                const newItem = {
+                  name: nameText,
+                  quantity: quantity,
+                  unit: unitText,
+                  is_approved: true,
+                }
+                dispatch(addGroceryItem(newItem));
                 setDialog(false);
               }
             }}
@@ -153,35 +194,35 @@ export default function HomeScreen() {
       >
         {groceryList.map((item, index) => (
           <Animatable.View
-            key={index}
+            key={item.id}
             animation="fadeInUp"
             duration={500}
             delay={index * 100}
           >
             <ItemButton
               name={item.name}
-              selected={selectedItems.includes(item.name)}
+              selected={selectedIds.includes(item.id)}
               ai={false}
               // Press calls side panel
-              onPress={() => handleItemPress(item.name)}
+              onPress={() => handleItemPress(item.id)}
             />
           </Animatable.View>
         ))}
 
         {aiItems.map((item, index) => (
           <Animatable.View
-            key={item}
+            key={item.id}
             animation="fadeInUp"
             duration={500}
             delay={(cartItems.length + index) * 100}
           >
             <ItemButton
-              name={item}
+              name={item.name}
               // AI items not in selectedItems, so "selected" is false
               selected={false}
               ai={true}
               // Press calls side panel
-              onPress={() => handleItemPress(item)}
+              onPress={() => handleItemPress(item.id)}
             />
           </Animatable.View>
         ))}
@@ -199,10 +240,10 @@ export default function HomeScreen() {
           text="Remove Selected Items"
           backgroundColor={theme.accentRed}
           onPress={() => {
-            setCartItems(
-              cartItems.filter((item) => !selectedItems.includes(item))
-            );
-            setSelectedItems([]);
+            for (let id of selectedIds) {
+              dispatch(deleteGroceryItem(id));
+            }
+            setSelectedIds([]);
           }}
           bottom={0}
         />
@@ -232,7 +273,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dialog: {
-    fontFamily: "inter",
     fontSize: 24,
     fontWeight: "500",
     textAlign: "center",
@@ -245,7 +285,6 @@ const styles = StyleSheet.create({
   dialogRow: {
     justifyContent: "center",
     alignItems: "center",
-    flexDirection: "row",
   },
   dialogErrorContainer: {
     width: "90%",

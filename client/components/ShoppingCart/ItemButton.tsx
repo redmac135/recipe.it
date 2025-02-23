@@ -100,7 +100,6 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 20,
-    fontFamily: "inter",
     fontWeight: "500",
     letterSpacing: 0.5,
   },

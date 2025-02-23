@@ -30,7 +30,13 @@ async def add_kitchenitem(item: dict):
 
 @router.post("/edit/{id}")
 async def edit_kitchenitem(item: dict, id: str):
-    db.collection("KitchenItems").document(id).update(item)
+    if "quantity" in item:
+        if item["quantity"] <= 0:
+            db.collection("KitchenItems").document(id).delete()
+        else:
+            db.collection("KitchenItems").document(id).update(item)
+    else:
+        raise ValueError("Quantity is required to edit a kitchen item")
 
     Conductor.execute_async_workflow("handle_inventory_change", {})
 
