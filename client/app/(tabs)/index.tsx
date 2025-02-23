@@ -1,12 +1,6 @@
 // index.tsx
-import React, { useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  SafeAreaView,
-  ScrollView,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { Text, StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
 import { Dialog } from "react-native-simple-dialogs";
 import { TextInput } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
@@ -20,16 +14,38 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 
 // Import the new side panel
 import SidePanel from "@/components/ShoppingCart/SidePanel";
+import { AppDispatch, RootState } from "@/state/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getGroceryList } from "@/state/groceryList/grocerySlice";
 
 export default function HomeScreen() {
+  const dispatch = useDispatch<AppDispatch>();
+  const groceryList = useSelector(
+    (state: RootState) => state.groceryList
+  ).groceryList;
+
   // Existing states
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [cartItems, setCartItems] = useState<string[]>(data.items);
-  const [aiItems, setAiItems] = useState<string[]>(["Feta Cheese", "Provolone"]);
+  const [aiItems, setAiItems] = useState<string[]>([
+    "Feta Cheese",
+    "Provolone",
+  ]);
   const [error, setError] = useState(false);
   const [dialog, setDialog] = useState(false);
   const [nameText, setNameText] = useState("");
+  const [unitText, setUnitText] = useState("");
 
+  useEffect(() => {
+    const grocery = async () => await dispatch(getGroceryList());
+
+    grocery().then((result) => {
+      console.log(result);
+      // For now, we'll just add all items to cart and AI
+      setCartItems(groceryList.map((item) => item.name));
+      setAiItems([]);
+    });
+  }, [dispatch]);
   // For side panel
   const [sidePanelVisible, setSidePanelVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState<string | null>(null);
@@ -70,7 +86,9 @@ export default function HomeScreen() {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
       {/* Dialog for adding a new item */}
       <Dialog
         visible={dialog}
@@ -129,7 +147,10 @@ export default function HomeScreen() {
       <Header name="Shopping List" back={false} />
 
       {/* Scrollable list of items */}
-      <ScrollView style={styles.scrollArea} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollArea}
+        showsVerticalScrollIndicator={false}
+      >
         {cartItems.map((item, index) => (
           <Animatable.View
             key={item}
@@ -178,7 +199,9 @@ export default function HomeScreen() {
           text="Remove Selected Items"
           backgroundColor={theme.accentRed}
           onPress={() => {
-            setCartItems(cartItems.filter((item) => !selectedItems.includes(item)));
+            setCartItems(
+              cartItems.filter((item) => !selectedItems.includes(item))
+            );
             setSelectedItems([]);
           }}
           bottom={0}
