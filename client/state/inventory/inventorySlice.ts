@@ -60,7 +60,6 @@ const inventorySlice = createSlice({
       })
       .addCase(getInventoryList.fulfilled, (state, action) => {
         state.inventoryList = action.payload;
-        console.log(state.inventoryList);
         state.status = FetchStatus.SUCCEEDED;
       })
       .addCase(getInventoryList.rejected, (state) => {
