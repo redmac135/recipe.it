@@ -15,7 +15,7 @@ import { AppDispatch, RootState } from "@/state/store";
 import { Dialog } from "react-native-simple-dialogs";
 import { Recipe } from "@/types/models";
 import { getRecipeList } from "@/state/recipes/recipeSlice";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 
 const Food = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +38,7 @@ const Food = () => {
     useCallback(() => {
       dispatch(getRecipeList());
     }, [dispatch])
-  )
+  );
 
   useEffect(() => {
     dispatch(getRecipeList());
@@ -46,7 +46,7 @@ const Food = () => {
 
   useEffect(() => {
     setItems(recipeList);
-    setCount(recipeList.length)
+    setCount(recipeList.length);
   }, [recipeList]);
 
   const firstColour = "#f04a5e";
@@ -88,7 +88,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setFirstDialog(false);
                   }}
-                  onRequestClose={() => { }}
+                  onRequestClose={() => {}}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20 }}
@@ -132,7 +132,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setThirdDialog(false);
                   }}
-                  onRequestClose={() => { }}
+                  onRequestClose={() => {}}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20 }}
@@ -302,7 +302,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setSecondDialog(false);
                   }}
-                  onRequestClose={() => { }}
+                  onRequestClose={() => {}}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20 }}
@@ -476,7 +476,23 @@ const Food = () => {
             )
           }
           onSwipeLeft={(item) => console.log("Swiped left:", item)}
-          onSwipeRight={(item) => console.log("Swiped right:", item)}
+          onSwipeRight={(item) => {
+            console.log("Swiped right:", item);
+
+            item.is_complete
+              ? setItems(
+                  item.steps?.map((step, index) => {
+                    return {
+                      name: `Step ${index + 1}`,
+                      id: step,
+                      is_complete: true,
+                      ingredients_have_per_serving: [],
+                      max_servings: 0,
+                    };
+                  }) || []
+                )
+              : router.replace("/");
+          }}
         />
       </View>
     </SafeAreaView>
