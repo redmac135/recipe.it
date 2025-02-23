@@ -10,8 +10,12 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import * as ImagePicker from "expo-image-picker";
-import { Menu, MenuOptions, MenuOption, MenuTrigger } from "react-native-popup-menu";
-
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+} from "react-native-popup-menu";
 
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
@@ -20,7 +24,9 @@ import { useColorScheme } from "@/hooks/useColorScheme";
 
 const Receipt = () => {
   const dimensions = useWindowDimensions();
-  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
+  const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>(
+    undefined
+  );
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
 
@@ -52,7 +58,6 @@ const Receipt = () => {
     }
   }
 
-
   async function uploadImage() {
     if (!image) {
       return;
@@ -61,15 +66,18 @@ const Receipt = () => {
     console.log(image);
 
     try {
-      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}receipts/upload-receipt/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          image_base64: image.uri.split(",")[1],
-        }),
-      })
+      const response = await fetch(
+        `${process.env.EXPO_PUBLIC_API_URL}receipts/upload-receipt/`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            image_base64: image.uri.split(",")[1],
+          }),
+        }
+      );
 
       if (response.ok) {
         console.log("Receipt uploaded successfully!");
@@ -82,7 +90,9 @@ const Receipt = () => {
   }
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
       <Header name="Scan Receipt" back={false} />
       <Animatable.View animation="fadeIn" duration={600} style={{ flex: 1 }}>
         <Menu
