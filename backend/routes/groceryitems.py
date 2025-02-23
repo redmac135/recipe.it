@@ -28,12 +28,12 @@ async def add_groceryitem(item: dict):
 @router.get("/accept/{id}")
 async def accept_groceryitem(id: str):
     doc = db.collection("GroceryItems").document(id)
-    doc.update({"is_accepted": True})
+    doc.update({"is_approved": True})
 
     return Response(status_code=status.HTTP_200_OK)
 
 
-@router.get("/delete/{id}")
+@router.delete("/delete/{id}")
 async def delete_groceryitem(id: str):
     db.collection("GroceryItems").document(id).delete()
 

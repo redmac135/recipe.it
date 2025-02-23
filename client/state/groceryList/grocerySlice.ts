@@ -18,7 +18,7 @@ export const getGroceryList = createAsyncThunk(
   "grocery/getGroceryList",
   async () => {
     const response = await fetchAPI("groceryitems/list", "GET");
-    const groceryList: GroceryItem[] = response.groceryList;
+    const groceryList: GroceryItem[] = response.groceryItems;
 
     return groceryList;
   },
@@ -37,7 +37,7 @@ export const acceptGrocerySuggestion = createAsyncThunk(
 // Async thunk to add a grocery item
 export const addGroceryItem = createAsyncThunk(
   "grocery/addGroceryItem",
-  async (item: GroceryItem) => {
+  async (item: Omit<GroceryItem, "id">) => {
     await fetchAPI("groceryitems/add", "POST", JSON.stringify(item));
 
     return item;
@@ -80,6 +80,7 @@ const grocerySlice = createSlice({
       })
       .addCase(getGroceryList.fulfilled, (state, action) => {
         state.groceryList = action.payload;
+        console.log("GOT HERE");
         state.status = FetchStatus.SUCCEEDED;
       })
       .addCase(getGroceryList.rejected, (state) => {
@@ -88,7 +89,11 @@ const grocerySlice = createSlice({
 
       .addCase(addGroceryItem.pending, (state, action) => {
         // optimistic update
-        state.groceryList.push(action.meta.arg);
+        const tmpItem: GroceryItem = {
+          id: "tmpId",
+          ...action.meta.arg,
+        };
+        state.groceryList.push(tmpItem);
       })
 
       .addCase(acceptGrocerySuggestion.pending, (state, action) => {
