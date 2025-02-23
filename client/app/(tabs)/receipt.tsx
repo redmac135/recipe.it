@@ -125,7 +125,7 @@ const Receipt = () => {
         </Menu>
 
         <View style={styles.imageContainer}>
-          <Text style={[styles.title, { color: theme.white }]}>Picture:</Text>
+          <Text style={[styles.title, { color: theme.white, marginTop: 35  }]}>Picture:</Text>
           {image ? (
             <Image
               source={image}
