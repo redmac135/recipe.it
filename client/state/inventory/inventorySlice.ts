@@ -18,7 +18,7 @@ export const getInventoryList = createAsyncThunk(
   "inventory/getInventoryList",
   async () => {
     const response = await fetchAPI("kitchenitems/list", "GET");
-    const inventoryList: KitchenItem[] = response.kitchenList;
+    const inventoryList: KitchenItem[] = response.kitchenItems;
 
     return inventoryList;
   },
@@ -52,11 +52,7 @@ export const editInventoryItem = createAsyncThunk(
 const inventorySlice = createSlice({
   name: "inventory",
   initialState: initState,
-  reducers: {
-    clearInventoryList: (state) => {
-      state.inventoryList = [];
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getInventoryList.pending, (state) => {
@@ -64,6 +60,7 @@ const inventorySlice = createSlice({
       })
       .addCase(getInventoryList.fulfilled, (state, action) => {
         state.inventoryList = action.payload;
+        console.log(state.inventoryList);
         state.status = FetchStatus.SUCCEEDED;
       })
       .addCase(getInventoryList.rejected, (state) => {

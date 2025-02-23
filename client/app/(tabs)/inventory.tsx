@@ -4,24 +4,26 @@ import Header from "@/components/Header";
 import { useEffect, useState } from "react";
 import Section from "@/components/Inventory/Section";
 import data from "../../constants/item_data";
-import { RootState } from "@/state/store";
+import { AppDispatch, RootState } from "@/state/store";
 import { useDispatch, useSelector } from "react-redux";
-import { ButtonProps, set } from "@/state/inventory/inventorySlice";
+import { ButtonProps, getInventoryList, set } from "@/state/inventory/inventorySlice";
 import SortButton from "@/components/Inventory/SortButton";
+import { KitchenItemCategoryEnum } from "@/types/models";
 
 /** 
   Inventory Screen For The App
 */
 export default function Inventory() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(set(data.testerItems));
+    dispatch(getInventoryList());
+    console.log("Getting inventory list");
   });
 
   const [selected, setSelected] = useState("Alphabetical");
 
-  const categories = ["Pantry", "Fridge", "Freezer"];
+  const categories = [KitchenItemCategoryEnum.PANTRY, KitchenItemCategoryEnum.FREEZER, KitchenItemCategoryEnum.FRIDGE];
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
