@@ -1,9 +1,6 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
-import { KitchenItem } from "@/types/models";
-import { useDispatch } from "react-redux";
-import KitchenItemEditModal from "./KitchenItemEditModal"
 
 interface ItemButtonProps {
   name: string;
@@ -22,8 +19,6 @@ const ItemButton = ({
   quantity,
   handleEdit,
 }: ItemButtonProps) => {
-  const dispatch = useDispatch();
-
   return (
     <View style={styles.outerContainer}>
       <View style={styles.innerContainer}>
@@ -40,26 +35,13 @@ const ItemButton = ({
         {/* Right: +/- quantity controls */}
         <View style={styles.quantitySection}>
           <View style={styles.counterContainer}>
-            <TouchableOpacity
-              style={styles.button}
+            <Text style={styles.countText}>{quantity} {unit}</Text>
+            <Button
+              title="Edit"
               onPress={() => {
                 handleEdit();
               }}
-            >
-              <Text style={styles.buttonText}>-</Text>
-            </TouchableOpacity>
-            <Text style={styles.countText}>{quantity}</Text>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                return;
-              }}
-            >
-              <Text style={styles.buttonText}>+</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.unitContainer}>
-            <Text numberOfLines={1}>{unit}</Text>
+            />
           </View>
         </View>
       </View>

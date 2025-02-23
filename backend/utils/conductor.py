@@ -16,10 +16,11 @@ class Conductor:
         response = requests.post(
             f"{Conductor.CONDUCTOR_SERVER_URL}/token",
             json={
-                "key": Conductor.CONDUCTOR_AUTH_KEY,
-                "secret": Conductor.CONDUCTOR_AUTH_SECRET,
+                "keyId": Conductor.CONDUCTOR_AUTH_KEY,
+                "keySecret": Conductor.CONDUCTOR_AUTH_SECRET,
             },
         )
+
         if response.status_code == 200:
             return response.json().get("token")
         else:
@@ -30,7 +31,10 @@ class Conductor:
     @staticmethod
     def execute_sync_workflow(name: str, input_data: dict) -> dict:
         token = Conductor.get_conductor_token()
-        headers = {"Authorization": f"Bearer {token}"}
+        headers = {
+            "X-Authorization": f"{token}",
+            "Content-Type": "application/json",
+        }
 
         response = requests.post(
             f"{Conductor.CONDUCTOR_SERVER_URL}/workflow/execute/{name}",
@@ -44,9 +48,12 @@ class Conductor:
             raise HTTPException(status_code=500, detail="Failed to execute workflow")
 
     @staticmethod
-    def execute_async_workflow(name: str, input_data: dict) -> dict:
+    def execute_async_workflow(name: str, input_data: dict) -> None:
         token = Conductor.get_conductor_token()
-        headers = {"Authorization": f"Bearer {token}"}
+        headers = {
+            "X-Authorization": f"{token}",
+            "Content-Type": "application/json",
+        }
 
         response = requests.post(
             f"{Conductor.CONDUCTOR_SERVER_URL}/workflow/{name}",
@@ -55,6 +62,6 @@ class Conductor:
         )
 
         if response.status_code == 200:
-            return response.json()
+            return
         else:
             raise HTTPException(status_code=500, detail="Failed to execute workflow")
