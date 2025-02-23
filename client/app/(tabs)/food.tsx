@@ -65,7 +65,7 @@ const Food = () => {
               <>
                 <Dialog
                   visible={firstDialog}
-                  title="Ingredients Per Serving"
+                  title="Total Ingredients"
                   titleStyle={{
                     fontFamily: "MerchantCopy",
                     fontSize: 36,
@@ -99,7 +99,7 @@ const Food = () => {
                               marginBottom: 5,
                             }}
                           >
-                            {ingredient.name}: {ingredient.quantity}{" "}
+                            {ingredient.name}: {ingredient.quantity * count}{" "}
                             {ingredient.unit}
                           </Text>
                         </View>
@@ -259,7 +259,7 @@ const Food = () => {
                     onPress={() => setFirstDialog(true)}
                     textColor={"white"}
                   >
-                    Ingredients Per Serving
+                    Total Ingredients
                   </Button>
                   <Button
                     style={{
@@ -311,7 +311,7 @@ const Food = () => {
                             marginBottom: 5,
                           }}
                         >
-                          {ingredient.name}: {ingredient.quantity}{" "}
+                          {ingredient.name}: {ingredient.quantity * count}{" "}
                           {ingredient.unit}
                         </Text>
                       </View>
@@ -374,7 +374,7 @@ const Food = () => {
                       marginTop: 5,
                     }}
                   >
-                    Estimated Cost: {item.estimated_cost}
+                    Estimated Cost: {item.estimated_cost! * count}
                   </Text>
                   <View
                     style={{
@@ -441,7 +441,7 @@ const Food = () => {
                     }}
                     textColor={"white"}
                   >
-                    Ingredients Per Serving
+                    Total Ingredients
                   </Button>
                   <Button
                     style={{
