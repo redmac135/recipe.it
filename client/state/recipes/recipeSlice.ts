@@ -18,7 +18,7 @@ export const getRecipeList = createAsyncThunk(
   "recipe/getRecipeList",
   async () => {
     const response = await fetchAPI("recipes/list", "GET");
-    const recipeList: Recipe[] = response.recipeList;
+    const recipeList: Recipe[] = response.recipes;
 
     return recipeList;
   },
@@ -36,6 +36,7 @@ const recipeSlice = createSlice({
     builder.addCase(getRecipeList.fulfilled, (state, action) => {
       state.status = FetchStatus.SUCCEEDED;
       state.recipeList = action.payload;
+      console.log(state.recipeList);
     });
     builder.addCase(getRecipeList.rejected, (state) => {
       state.status = FetchStatus.FAILED;

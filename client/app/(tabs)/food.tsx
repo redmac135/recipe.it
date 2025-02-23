@@ -2,27 +2,26 @@ import {
   View,
   Text,
   SafeAreaView,
-  useWindowDimensions,
-  TouchableOpacity,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
-import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import { DeckSwiper } from "expo-deck-swiper";
-import data from "../../constants/item_data";
 import { Button } from "react-native-paper";
-import { useSelector } from "react-redux";
-import { RootState } from "@/state/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/state/store";
 import { Dialog } from "react-native-simple-dialogs";
-import CustomButton from "@/components/ShoppingCart/ActionButton";
-import { useFonts } from "expo-font";
+import { Recipe } from "@/types/models";
+import { getRecipeList } from "@/state/recipes/recipeSlice";
+import { useFocusEffect } from "expo-router";
 
 const Food = () => {
-  const dimensions = useWindowDimensions();
-  const [items, setItems] = useState<foodRecipes[]>(data.recipeItems);
-  const [count, setCount] = useState(1);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const [items, setItems] = useState<Recipe[]>([]);
+  const [count, setCount] = useState(0);
   const [firstDialog, setFirstDialog] = useState(false);
   const [secondDialog, setSecondDialog] = useState(false);
   const [thirdDialog, setThirdDialog] = useState(false);
@@ -31,13 +30,24 @@ const Food = () => {
     { name: string; quantity: number; unit: string }[]
   >([]);
 
-  let [fontsLoaded] = useFonts({
-    MerchantCopy: require("../../assets/fonts/merchant-copy.ttf"),
-  });
-
   const recipeList = useSelector(
-    (state: RootState) => state.recipeList
-  ).recipeList;
+    (state: RootState) => state.recipeList.recipeList
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getRecipeList());
+    }, [dispatch])
+  )
+
+  useEffect(() => {
+    dispatch(getRecipeList());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setItems(recipeList);
+    setCount(recipeList.length)
+  }, [recipeList]);
 
   const firstColour = "#f04a5e";
   const thirdColour = "#642ce9";
@@ -59,8 +69,10 @@ const Food = () => {
         }}
       >
         <DeckSwiper
+          key={items.length}
+          allowedDirections={["left", "right"]}
           data={items}
-          renderCard={(item) =>
+          renderCard={(item: Recipe) =>
             item.is_complete ? (
               <>
                 <Dialog
@@ -76,7 +88,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setFirstDialog(false);
                   }}
-                  onRequestClose={() => {}}
+                  onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20 }}
@@ -120,7 +132,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setThirdDialog(false);
                   }}
-                  onRequestClose={() => {}}
+                  onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20 }}
@@ -152,9 +164,10 @@ const Food = () => {
                   style={{
                     backgroundColor: firstColour,
                     height: "100%",
-                    padding: 20,
+                    padding: 15,
                     borderRadius: 10,
                     zIndex: 7,
+                    overflowY: "scroll",
                   }}
                 >
                   <Text
@@ -181,7 +194,7 @@ const Food = () => {
                     style={{
                       textAlign: "center",
                       color: secondColour,
-                      fontSize: 30,
+                      fontSize: 20,
                     }}
                   >
                     You Have Everything You Need! {":)"}
@@ -289,7 +302,7 @@ const Food = () => {
                   onTouchOutside={() => {
                     setSecondDialog(false);
                   }}
-                  onRequestClose={() => {}}
+                  onRequestClose={() => { }}
                   contentInsetAdjustmentBehavior={undefined}
                   animationType="fade"
                   dialogStyle={{ borderRadius: 20 }}
@@ -322,9 +335,10 @@ const Food = () => {
                   style={{
                     backgroundColor: firstColour,
                     height: "100%",
-                    padding: 20,
+                    padding: 15,
                     borderRadius: 10,
                     zIndex: 7,
+                    overflowY: "scroll",
                   }}
                 >
                   <Text
@@ -351,7 +365,7 @@ const Food = () => {
                     style={{
                       textAlign: "center",
                       color: secondColour,
-                      fontSize: 30,
+                      fontSize: 20,
                     }}
                   >
                     You Need More Ingredients {":("}
@@ -450,26 +464,12 @@ const Food = () => {
                       borderRadius: 20,
                     }}
                     onPress={() => {
-                      setNewList(item.existing_groceries_per_serving || []);
-                      setSecondDialog(true);
-                    }}
-                    textColor={"white"}
-                  >
-                    Existing Groceries Per Serving
-                  </Button>
-                  <Button
-                    style={{
-                      backgroundColor: thirdColour,
-                      marginTop: 20,
-                      borderRadius: 20,
-                    }}
-                    onPress={() => {
                       setNewList(item.new_groceries_per_serving || []);
                       setSecondDialog(true);
                     }}
                     textColor={"white"}
                   >
-                    New Groceries Per Serving
+                    New Groceries To Be Added
                   </Button>
                 </View>
               </>
