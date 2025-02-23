@@ -45,14 +45,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="suggestions"
-        options={{
-          tabBarIcon: ({ color }) => (
-            <MaterialIcons size={22} name="mic" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="receipt"
         options={{
           tabBarIcon: ({ color }) => (
