@@ -38,11 +38,13 @@ class Conductor:
 
         response = requests.post(
             f"{Conductor.CONDUCTOR_SERVER_URL}/workflow/execute/{name}",
-            json={"name": name, "input": input_data},
+            json=input_data,
             headers=headers,
         )
 
-        if response.status_code == 200:
+        print(response.status_code)
+
+        if response.status_code in [200, 201, 202, 203, 204, 205, 206]:
             return response.json()
         else:
             raise HTTPException(status_code=500, detail="Failed to execute workflow")

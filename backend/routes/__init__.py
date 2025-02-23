@@ -13,4 +13,4 @@ class Routes:
         app.include_router(
             groceryitems_router, prefix="/groceryitems", tags=["GroceryItems"]
         )
-        app.include_router(recipts_router, prefix="/recipts", tags=["Recipts"])
+        app.include_router(recipts_router, prefix="/receipts", tags=["Recipts"])

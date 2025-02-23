@@ -1,5 +1,5 @@
 // receipt.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import * as Animatable from "react-native-animatable";
 import * as ImagePicker from "expo-image-picker";
 import { Menu, MenuOptions, MenuOption, MenuTrigger } from "react-native-popup-menu";
 
+
 import Colors from "../../constants/Colors";
 import Header from "@/components/Header";
 import StartButton from "@/components/Receipt/StartButton";
@@ -22,6 +23,10 @@ const Receipt = () => {
   const [image, setImage] = useState<ImagePicker.ImagePickerAsset | undefined>(undefined);
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
+
+  useEffect(() => {
+    uploadImage();
+  }, [image]);
 
   async function pickImage() {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,6 +46,35 @@ const Receipt = () => {
       });
       if (!result.canceled) {
         setImage(result.assets[0]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+  async function uploadImage() {
+    if (!image) {
+      return;
+    }
+
+    console.log(image);
+
+    try {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}receipts/upload-receipt/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          image_base64: image.uri.split(",")[1],
+        }),
+      })
+
+      if (response.ok) {
+        console.log("Receipt uploaded successfully!");
+      } else {
+        console.log("Error uploading receipt.");
       }
     } catch (error) {
       console.log(error);
