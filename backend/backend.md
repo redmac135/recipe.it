@@ -29,7 +29,7 @@ https://firebase.google.com/docs/firestore/quickstart
 4. Start the backend
 
    ```bash
-    npx expo start
+   uvicorn main:app --reload
    ```
 
 
