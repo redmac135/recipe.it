@@ -30,7 +30,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "List",
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={22} name="shopping-cart" color={color} />
           ),
@@ -39,7 +38,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="inventory"
         options={{
-          title: "Inventory",
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={22} name="inventory" color={color} />
           ),
@@ -48,7 +46,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="suggestions"
         options={{
-          title: "AI",
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={22} name="mic" color={color} />
           ),
@@ -57,7 +54,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="receipt"
         options={{
-          title: "Receipt",
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={22} name="receipt" color={color} />
           ),
@@ -66,7 +62,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="food"
         options={{
-          title: "Food",
           tabBarIcon: ({ color }) => (
             <MaterialIcons size={22} name="restaurant" color={color} />
           ),
