@@ -22,15 +22,16 @@ const Section = ({ name, alphabetical, handleEdit }: SectionProps) => {
   useEffect(() => {
     let tempList = Array.from(inventoryList);
 
-    alphabetical
-      ? setNewList(tempList.sort((a, b) => a.name.localeCompare(b.name)))
-      : setNewList(
-        tempList.sort((a, b) => a.expiry_date.localeCompare(b.expiry_date))
-      );
+    if (alphabetical) {
+      tempList.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      tempList.sort((a, b) => a.expiry_date.localeCompare(b.expiry_date));
+    }
+    setNewList(tempList);
   }, [inventoryList, alphabetical]);
 
   return (
-    <View style={{ marginBottom: 20 }}>
+    <View style={styles.sectionContainer}>
       <Text style={styles.categoryTitle}>{name}</Text>
       {newList.map((item, index) =>
         item.category == name ? (
@@ -50,8 +51,11 @@ const Section = ({ name, alphabetical, handleEdit }: SectionProps) => {
 };
 
 const styles = StyleSheet.create({
+  sectionContainer: {
+    marginBottom: 20,
+  },
   categoryTitle: {
-    color: Colors.black,
+    color: Colors.light.black,
     fontSize: 24,
     fontFamily: "inter",
     fontWeight: "600",
