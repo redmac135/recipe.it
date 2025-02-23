@@ -33,3 +33,4 @@ Follow these steps to get started with Recipeit:
 3. **Set Up Your Frontend**
    - Recipeit's backend is run using Expo, please go to . 
    - To create your Recipeit backend, please go to the [Recipeit Frontend Readme](https://github.com/redmac135/recipe.it/blob/dev/client/README.md) and follow the instructions there to properly set up your frontend.
+
