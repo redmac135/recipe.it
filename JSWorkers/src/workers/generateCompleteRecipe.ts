@@ -8,7 +8,7 @@ const completeRecipeSchema = z.object({
   ingredients_have_per_serving: z.array(
     z.object({
       name: z.string(),
-      amount: z.number(),
+      quantity: z.number(),
       unit: z.string(),
     }),
   ),
@@ -33,8 +33,7 @@ async function generateCompleteRecipe(
     };
   }
 
-  const previouslyRejectedRecipes: string[] =
-    task.inputData?.previouslyRejectedRecipes || [];
+  const previousRecipes: string[] = task.inputData?.previousRecipes || [];
 
   const prompt = `
 Here is a list of items in my kitchen sorted by expiry:
@@ -43,7 +42,7 @@ ${inventory
   .join("\n")}
 
 I have been given these recipes before:
-${previouslyRejectedRecipes.map((recipe) => `- ${recipe}`).join("\n")}
+${previousRecipes.map((recipe) => `- ${recipe}`).join("\n")}
 `;
 
   const { output } = await generateWithSchema(
@@ -71,11 +70,14 @@ ${previouslyRejectedRecipes.map((recipe) => `- ${recipe}`).join("\n")}
   }
 
   output.is_complete = true;
+  previousRecipes.push(output.name);
 
   return {
     status: "COMPLETED",
     outputData: {
       recipe: output,
+      no_more_recipes: false,
+      running_recipes: previousRecipes,
     },
   };
 }

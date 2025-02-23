@@ -1,6 +1,6 @@
 export enum GroceryAIReasonEnum {
   LOW_QUANTITY = "LOW_QUANTITY",
-  USER_REQUEST = "USER_REQUEST",
+  AI_OTHER = "AI_OTHER",
   COMPLETE_RECIPE = "COMPLETE_RECIPE",
 }
 

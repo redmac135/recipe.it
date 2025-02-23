@@ -8,7 +8,7 @@ const partialRecipeSchema = z.object({
   ingredients_have_per_serving: z.array(
     z.object({
       name: z.string(),
-      amount: z.number(),
+      quantity: z.number(),
       unit: z.string(),
     }),
   ),
@@ -46,8 +46,7 @@ async function generateCompleteRecipe(
     };
   }
 
-  const previouslyRejectedRecipes: string[] =
-    task.inputData?.previouslyRejectedRecipes || [];
+  const previousRecipes: string[] = task.inputData?.previousRecipes || [];
 
   const groceryList: GroceryItem[] = task.inputData?.groceryList || [];
 
@@ -58,7 +57,7 @@ ${inventory
   .join("\n")}
 
 I have been given these recipes before:
-${previouslyRejectedRecipes.map((recipe) => `- ${recipe}`).join("\n")}
+${previousRecipes.map((recipe) => `- ${recipe}`).join("\n")}
 
 Here is my existing grocery list:
 ${groceryList
@@ -81,10 +80,14 @@ ${groceryList
     };
   }
 
+  output.is_complete = false;
+  previousRecipes.push(output.name);
+
   return {
     status: "COMPLETED",
     outputData: {
-      recipes: output,
+      recipe: output,
+      running_recipes: previousRecipes,
     },
   };
 }
