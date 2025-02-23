@@ -232,7 +232,6 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   dialog: {
-    fontFamily: "inter",
     fontSize: 24,
     fontWeight: "500",
     textAlign: "center",

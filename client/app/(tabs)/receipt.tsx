@@ -148,14 +148,12 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 34,
-    fontFamily: "inter",
     fontWeight: "500",
     marginBottom: 20,
   },
   subtitle: {
     fontSize: 24,
     textAlign: "center",
-    fontFamily: "inter",
     fontWeight: "400",
   },
 });

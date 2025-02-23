@@ -79,7 +79,6 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 20,
     color: Colors.light.black,
-    fontFamily: "inter",
     fontWeight: "500",
     letterSpacing: 0.5,
   },

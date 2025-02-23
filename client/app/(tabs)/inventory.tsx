@@ -97,17 +97,19 @@ const styles = StyleSheet.create({
     marginHorizontal: "7.5%",
     marginTop: 4,
     marginBottom: 10,
+    color: "white",
   },
   sortLabel: {
     fontSize: 20,
-    fontFamily: "inter",
     fontWeight: "500",
     letterSpacing: 0.5,
     marginRight: 20,
+    color: "white",
   },
   scrollArea: {
     flex: 1,
     width: "85%",
     alignSelf: "center",
+    color: "white",
   },
 });

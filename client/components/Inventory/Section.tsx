@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
   categoryTitle: {
     color: Colors.light.black,
     fontSize: 24,
-    fontFamily: "inter",
     fontWeight: "600",
     marginBottom: 10,
   },

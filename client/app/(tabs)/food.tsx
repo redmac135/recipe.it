@@ -20,8 +20,8 @@ const Food = () => {
   const [count, setCount] = useState(1);
 
   const firstColour = "#f04a5e";
-  const secondColour = "#642ce9";
-  const thirdColour = "#4e7afd";
+  const thirdColour = "#642ce9";
+  const secondColour = "#24274a";
   /**
    * #f04a5e, #642ce9, #4e7afd
    */
