@@ -6,7 +6,7 @@ Food costs are skyrocketing in Canada, and every morsel counts! Recipeit is here
 Recipeit leverages cutting-edge technologies to transform your grocery management experience:
 - **Receipt Scanning**: Capture your receipts using our Expo-based mobile app 📱.
 - **OCR Integration**: Use Tesseract OCR to convert receipt images into text.
-- **Smart Data Parsing**: Gemini processes the text into structured JSON data with fields such as ingredient name, expiry date, and quantity. All recipes and logic were handled with gemini API.
+- **Smart Data Parsing**: Gemini processes the text into structured JSON data with fields such as ingredient name, expiry date, and quantity. All recipes and "ingredient-use" logic were handled with gemini API.
 - **Database Management**: Store and retrieve your data effortlessly with Firestore.
 - **FastAPI Backend**: Fetch data using our FastAPI-powered backend, ensuring smooth and reliable performance.
 
