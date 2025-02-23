@@ -58,7 +58,7 @@ export default function HomeScreen() {
 
   // For side panel
   const [sidePanelVisible, setSidePanelVisible] = useState(false);
-  const [currentItem, setCurrentItem] = useState<string | null>(null);
+  const [currentItem, setCurrentItem] = useState<GroceryItem | null>(null);
 
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
@@ -84,9 +84,10 @@ export default function HomeScreen() {
     } else {
       handleToggle(id);
     }
+  }
 
-    // Then open side panel with the item
-    setCurrentItem(id);
+  function handleInfoPress(id: string) {
+    setCurrentItem(groceryList.find((item) => item.id === id) || null);
     setSidePanelVisible(true);
   }
 
@@ -200,11 +201,12 @@ export default function HomeScreen() {
             delay={index * 100}
           >
             <ItemButton
-              name={item.name}
+              item={item}
               selected={selectedIds.includes(item.id)}
               ai={false}
               // Press calls side panel
               onPress={() => handleItemPress(item.id)}
+              onInfo={handleInfoPress}
             />
           </Animatable.View>
         ))}
@@ -217,12 +219,13 @@ export default function HomeScreen() {
             delay={(cartItems.length + index) * 100}
           >
             <ItemButton
-              name={item.name}
+              item={item}
               // AI items not in selectedItems, so "selected" is false
               selected={false}
               ai={true}
               // Press calls side panel
               onPress={() => handleItemPress(item.id)}
+              onInfo={handleInfoPress}
             />
           </Animatable.View>
         ))}
@@ -250,7 +253,7 @@ export default function HomeScreen() {
       </View>
 
       {/* Conditionally render side panel if visible */}
-      {sidePanelVisible && (
+      {(sidePanelVisible && currentItem) && (
         <SidePanel
           item={currentItem}
           onClose={() => setSidePanelVisible(false)}
