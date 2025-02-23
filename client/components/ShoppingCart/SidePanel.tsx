@@ -57,7 +57,7 @@ export default function SidePanel({ item, onClose }: SidePanelProps) {
             ) : null}
 
             <Text style={styles.itemSubtitle}>
-                {item.ai_reason_details ?? "No Item Selected"}
+                {item.ai_reason_details}
             </Text>
 
             <TouchableOpacity onPress={onClose} style={styles.closeButton}>
