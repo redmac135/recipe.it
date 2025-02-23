@@ -1,4 +1,4 @@
-# Recipeit 🍲
+# Recipeit 🇨🇦🍲
 
 Food costs are skyrocketing in Canada, and every morsel counts! Recipeit is here to help you save money by ensuring nothing goes to waste. With Recipeit, you can manage your groceries efficiently, and get recipe suggestions based on ingredients you already have, especially those nearing their expiration date.
 
