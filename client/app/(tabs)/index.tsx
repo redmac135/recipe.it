@@ -18,7 +18,11 @@ import ItemButton from "@/components/ShoppingCart/ItemButton";
 import CustomButton from "@/components/ShoppingCart/ActionButton";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
+// Import the new side panel
+import SidePanel from "@/components/ShoppingCart/SidePanel";
+
 export default function HomeScreen() {
+  // Existing states
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [cartItems, setCartItems] = useState<string[]>(data.items);
   const [aiItems, setAiItems] = useState<string[]>(["Feta Cheese", "Provolone"]);
@@ -26,9 +30,14 @@ export default function HomeScreen() {
   const [dialog, setDialog] = useState(false);
   const [nameText, setNameText] = useState("");
 
+  // For side panel
+  const [sidePanelVisible, setSidePanelVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState<string | null>(null);
+
   const colorScheme = useColorScheme();
   const theme = Colors[colorScheme ?? "light"];
 
+  // Only for toggling item selection
   function handleToggle(name: string) {
     if (selectedItems.includes(name)) {
       setSelectedItems(selectedItems.filter((item) => item !== name));
@@ -37,9 +46,27 @@ export default function HomeScreen() {
     }
   }
 
+  // Move AI items into cart
   function handleAI(name: string) {
     setAiItems(aiItems.filter((item) => item !== name));
     setCartItems([...cartItems, name]);
+  }
+
+  // Show side panel with the item details
+  function handleItemPress(itemName: string) {
+    // You can also incorporate handleToggle or handleAI if needed
+    // e.g. handleToggle(itemName) or handleAI(itemName)
+
+    // For example, let's do selection toggling for normal items, AI logic for AI items:
+    if (aiItems.includes(itemName)) {
+      handleAI(itemName);
+    } else {
+      handleToggle(itemName);
+    }
+
+    // Then open side panel with the item
+    setCurrentItem(itemName);
+    setSidePanelVisible(true);
   }
 
   return (
@@ -54,7 +81,7 @@ export default function HomeScreen() {
           setError(false);
           setNameText("");
         }}
-        onRequestClose={() => { }}
+        onRequestClose={() => {}}
         contentInsetAdjustmentBehavior={undefined}
         animationType="fade"
         dialogStyle={{ borderRadius: 20 }}
@@ -65,7 +92,7 @@ export default function HomeScreen() {
               mode="flat"
               placeholder="Type Here..."
               placeholderTextColor={theme.gray}
-              value={nameText} // Ensure controlled input
+              value={nameText}
               onChangeText={(text: string) => setNameText(text)}
               activeOutlineColor={theme.accentRed}
               outlineColor={theme.gray}
@@ -88,8 +115,9 @@ export default function HomeScreen() {
             backgroundColor={theme.accentRed}
             bottom={0}
             onPress={() => {
-              if (nameText.length === 0) setError(true);
-              else {
+              if (nameText.length === 0) {
+                setError(true);
+              } else {
                 setCartItems([...cartItems, nameText]);
                 setDialog(false);
               }
@@ -104,7 +132,7 @@ export default function HomeScreen() {
       <ScrollView style={styles.scrollArea} showsVerticalScrollIndicator={false}>
         {cartItems.map((item, index) => (
           <Animatable.View
-            key={index}
+            key={item}
             animation="fadeInUp"
             duration={500}
             delay={index * 100}
@@ -112,29 +140,33 @@ export default function HomeScreen() {
             <ItemButton
               name={item}
               selected={selectedItems.includes(item)}
-              onPress={() => handleToggle(item)}
               ai={false}
+              // Press calls side panel
+              onPress={() => handleItemPress(item)}
             />
           </Animatable.View>
         ))}
 
         {aiItems.map((item, index) => (
           <Animatable.View
-            key={index}
+            key={item}
             animation="fadeInUp"
             duration={500}
             delay={(cartItems.length + index) * 100}
           >
             <ItemButton
               name={item}
-              onPress={() => handleAI(item)}
+              // AI items not in selectedItems, so "selected" is false
+              selected={false}
               ai={true}
+              // Press calls side panel
+              onPress={() => handleItemPress(item)}
             />
           </Animatable.View>
         ))}
       </ScrollView>
 
-      {/* Buttons at the bottom */}
+      {/* Bottom buttons - DO NOT trigger side panel */}
       <View style={styles.buttonContainer}>
         <CustomButton
           text="Add Item"
@@ -152,6 +184,14 @@ export default function HomeScreen() {
           bottom={0}
         />
       </View>
+
+      {/* Conditionally render side panel if visible */}
+      {sidePanelVisible && (
+        <SidePanel
+          item={currentItem}
+          onClose={() => setSidePanelVisible(false)}
+        />
+      )}
     </SafeAreaView>
   );
 }
