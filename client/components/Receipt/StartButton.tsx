@@ -10,7 +10,7 @@ const StartButton = ({ done }: { done: boolean }) => {
         padding: 15,
         borderRadius: 20,
         flex: 1,
-        backgroundColor: "#008080",
+        backgroundColor: "#f34a5e",
         boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
         alignItems: "center",
         justifyContent: "center",

@@ -70,10 +70,6 @@ export default function HomeScreen() {
 
   // Show side panel with the item details
   function handleItemPress(itemName: string) {
-    // You can also incorporate handleToggle or handleAI if needed
-    // e.g. handleToggle(itemName) or handleAI(itemName)
-
-    // For example, let's do selection toggling for normal items, AI logic for AI items:
     if (aiItems.includes(itemName)) {
       handleAI(itemName);
     } else {
