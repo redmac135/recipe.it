@@ -64,7 +64,10 @@ export default function Inventory() {
         />
       </View>
       <View style={{ flex: 1, alignItems: "center" }}>
-        <ScrollView style={{ width: "85%" }}>
+        <ScrollView
+          style={{ width: "85%" }}
+          showsVerticalScrollIndicator={false}
+        >
           {categories.map((category, index) => {
             return (
               <Section
@@ -75,6 +78,7 @@ export default function Inventory() {
             );
           })}
         </ScrollView>
+        <View style={{ height: 60 }} />
       </View>
     </SafeAreaView>
   );

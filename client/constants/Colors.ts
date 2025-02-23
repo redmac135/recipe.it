@@ -13,6 +13,9 @@ const Colors = {
   white: "#fff",
   gray: "#808588",
   black: "#000",
+  red: "#CC0000",
+  green: "#00CC00",
+  teal: "#008080",
   light: {
     text: '#11181C',
     background: '#fff',
