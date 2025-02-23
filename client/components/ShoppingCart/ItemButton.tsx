@@ -32,13 +32,13 @@ const ItemButton = ({ name, selected, onPress, ai }: ButtonProps) => {
               name="add"
               size={20}
               color={Colors.light.activity}
-              onPress={onPress}
+              onPress={onPress} // Press triggers side panel for AI items
             />
           ) : (
             <View style={styles.checkboxBorder}>
               <Checkbox
                 status={selected ? "checked" : "unchecked"}
-                onPress={onPress}
+                onPress={onPress} // Press triggers side panel for normal items
                 color={Colors.light.black}
               />
             </View>
