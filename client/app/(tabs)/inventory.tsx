@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Text, StyleSheet, View, SafeAreaView, ScrollView } from "react-native";
 import * as Animatable from "react-native-animatable";
 
@@ -15,6 +15,7 @@ import KitchenItemEditModal from "@/components/Inventory/KitchenItemEditModal";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { AppDispatch } from "@/state/store";
 import { useDispatch } from "react-redux";
+import { useFocusEffect } from "expo-router";
 
 export default function Inventory() {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,6 +31,12 @@ export default function Inventory() {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState<KitchenItem | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getInventoryList());
+    }, [dispatch])
+  );
 
   const handleEdit = (item: KitchenItem) => {
     console.log(item);
