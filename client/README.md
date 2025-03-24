@@ -1,4 +1,4 @@
-# Client READme 👋
+# Recipe.it Frontend React Native 👋
 
 Our app's front end is build on React Native and Expo. You can either use the Expo Go app to run the applicaiton on your physical device, or you can run it on web. Both options are explained below:
 
